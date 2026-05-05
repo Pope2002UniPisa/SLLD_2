@@ -1,0 +1,57 @@
+{
+    "phase": "1.1_initial_dataset_cleaning",
+    "input_file": "dataset/slld_binder_Xy_65_features.csv",
+    "output_clean_file": "outputs/phase1_1_initial_cleaning/slld_phase1_1_clean_raw.csv",
+    "initial_n_rows": 535,
+    "initial_n_columns": 68,
+    "clean_n_rows": 535,
+    "clean_n_columns": 68,
+    "n_id_columns": 3,
+    "n_feature_columns": 65,
+    "id_columns": [
+        "entry_id",
+        "word",
+        "target_word_class"
+    ],
+    "target_column": "target_word_class",
+    "valid_target_classes": [
+        "adjective",
+        "noun",
+        "verb"
+    ],
+    "n_exact_duplicate_rows_removed": 0,
+    "n_duplicated_word_form_rows": 2,
+    "n_rows_with_at_least_one_missing_value": 102,
+    "n_complete_rows": 433,
+    "columns_with_missing_values": [
+        {
+            "feature": "complexity",
+            "missing_count": 101,
+            "missing_percent": 18.878504672897193
+        },
+        {
+            "feature": "practice",
+            "missing_count": 39,
+            "missing_percent": 7.289719626168225
+        },
+        {
+            "feature": "caused",
+            "missing_count": 39,
+            "missing_percent": 7.289719626168225
+        },
+        {
+            "feature": "drive",
+            "missing_count": 1,
+            "missing_percent": 0.1869158878504673
+        }
+    ],
+    "methodological_decisions": {
+        "exact_duplicates": "removed if present",
+        "duplicated_word_forms": "reported but retained, because the statistical unit is the lexical entry",
+        "rows_with_missing_values": "retained, because the dataset is small and class-imbalanced",
+        "columns_with_missing_values": "retained, because missingness is limited and the 65 semantic features define the original representation space",
+        "imputation": "postponed to a later preprocessing step",
+        "standardization": "postponed to a later preprocessing step",
+        "train_test_split": "not performed in this phase"
+    }
+}
