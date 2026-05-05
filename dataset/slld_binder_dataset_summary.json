@@ -1,0 +1,28 @@
+{
+  "source_archive": "SLLD_exam.zip",
+  "source_file": "SLLD_exam/word_ratings/Word_Ratings.csv",
+  "rows_lexical_entries": 535,
+  "unique_word_forms": 534,
+  "duplicate_word_forms": {
+    "used": 2
+  },
+  "semantic_features": 65,
+  "expanded_features": 2210,
+  "target": "word_class: noun / verb / adjective, derived from WC column",
+  "class_counts": {
+    "noun": 434,
+    "adjective": 39,
+    "verb": 62
+  },
+  "missing_values_by_base_feature": {
+    "complexity": 101,
+    "practice": 39,
+    "caused": 39,
+    "drive": 1
+  },
+  "notes": [
+    "No imputation, scaling or train/test split has been applied in these prepared CSV files.",
+    "This avoids data leakage; imputation and standardization should be fitted on the training set only.",
+    "The expanded terms file contains original features, squared terms and all pairwise interactions: 65 + 65 + C(65,2) = 2210."
+  ]
+}

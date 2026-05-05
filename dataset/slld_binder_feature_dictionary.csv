@@ -1,0 +1,66 @@
+feature,original_name,domain,description,source_table,included_in_base_65
+vision,Vision,Vision,something that you can easily see,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+bright,Bright,Vision,visually light or bright,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+dark,Dark,Vision,visually dark,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+color,Colour,Vision,having a characteristic or defining colour,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+pattern,Pattern,Vision,having a characteristic or defining visual texture or surface pattern,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+large,Large,Vision,large in size,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+small,Small,Vision,small in size,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+motion,Motion,Vision,showing a lot of visually observable movement,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+biomotion,Biomotion,Vision,showing movement like that of a living thing,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+fast,Fast,Vision,showing visible movement that is fast,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+slow,Slow,Vision,showing visible movement that is slow,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+shape,Shape,Vision,having a characteristic or defining visual shape or form,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+complexity,Complexity,Vision,visually complex,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+face,Face,Vision,having a human or human-like face,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+body,Body,Vision,having human or human-like body parts,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+touch,Touch,Somatic,something that you could easily recognize by touch,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+temperature,Temperature,Somatic,hot or cold to the touch,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+texture,Texture,Somatic,having a smooth or rough texture to the touch,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+weight,Weight,Somatic,light or heavy in weight,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+pain,Pain,Somatic,associated with pain or physical discomfort,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+audition,Audition,Audition,something that you can easily hear,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+loud,Loud,Audition,making a loud sound,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+low,Low,Audition,having a low-pitched sound,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+high,High,Audition,having a high-pitched sound,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+sound,Sound,Audition,having a characteristic or recognizable sound or sounds,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+music,Music,Audition,making a musical sound,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+speech,Speech,Audition,someone or something that talks,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+taste,Taste,Gustation,having a characteristic or defining taste,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+smell,Smell,Olfaction,having a characteristic or defining smell or smells,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+head,Head,Motor,"associated with actions using the face, mouth, or tongue",T0001-10.1080%2F02643294.2016.1147426.csv,yes
+upperlimb,Upper limb,Motor,"associated with actions using the arm, hand, or fingers",T0001-10.1080%2F02643294.2016.1147426.csv,yes
+lowerlimb,Lower limb,Motor,associated with actions using the leg or foot,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+practice,Practice,Motor,a physical object YOU have personal experience using,T0001-10.1080%2F02643294.2016.1147426.csv,yes
+landmark,Landmark,Spatial,"having a fixed location, as on a map",T0002-10.1080%2F02643294.2016.1147426.csv,yes
+path,Path,Spatial,showing changes in location along a particular direction or path,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+scene,Scene,Spatial,bringing to mind a particular setting or physical location,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+near,Near,Spatial,often physically near to you (within easy reach) in everyday life,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+toward,Toward,Spatial,associated with movement toward or into you,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+away,Away,Spatial,associated with movement away from or out of you,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+number,Number,Spatial,associated with a specific number or amount,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+time,Time,Temporal,an event or occurrence that occurs at a typical or predictable time,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+duration,Duration,Temporal,"an event that has a predictable duration, whether short or long",T0002-10.1080%2F02643294.2016.1147426.csv,yes
+long,Long,Temporal,an event that lasts for a long period of time,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+short,Short,Temporal,an event that lasts for a short period of time,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+caused,Caused,Causal,"caused by some clear preceding event, action, or situation",T0002-10.1080%2F02643294.2016.1147426.csv,yes
+consequential,Consequential,Causal,likely to have consequences (cause other things to happen),T0002-10.1080%2F02643294.2016.1147426.csv,yes
+social,Social,Social,an activity or event that involves an interaction between people,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+human,Human,Social,"having human or human-like intentions, plans, or goals",T0002-10.1080%2F02643294.2016.1147426.csv,yes
+communication,Communication,Social,a thing or action that people use to communicate,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+self,Self,Social,"related to your own view of yourself, a part of YOUR self-image",T0002-10.1080%2F02643294.2016.1147426.csv,yes
+cognition,Cognition,Cognition,a form of mental activity or a function of the mind,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+benefit,Benefit,Emotion,someone or something that could help or benefit you or others,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+harm,Harm,Emotion,someone or something that could cause harm to you or others,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+pleasant,Pleasant,Emotion,someone or something that you find pleasant,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+unpleasant,Unpleasant,Emotion,someone or something that you find unpleasant,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+happy,Happy,Emotion,someone or something that makes you feel happy,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+sad,Sad,Emotion,someone or something that makes you feel sad,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+angry,Angry,Emotion,someone or something that makes you feel angry,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+disgusted,Disgusted,Emotion,someone or something that makes you feel disgusted,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+fearful,Fearful,Emotion,someone or something that makes you feel afraid,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+surprised,Surprised,Emotion,someone or something that makes you feel surprised,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+drive,Drive,Drive,someone or something that motivates you to do something,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+needs,Needs,Drive,someone or something that would be hard for you to live without,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+attention,Attention,Attention,someone or something that grabs your attention,T0002-10.1080%2F02643294.2016.1147426.csv,yes
+arousal,Arousal,Attention,"someone or something that makes you feel alert, activated, excited, or keyed up in either a positive or negative way",T0002-10.1080%2F02643294.2016.1147426.csv,yes
