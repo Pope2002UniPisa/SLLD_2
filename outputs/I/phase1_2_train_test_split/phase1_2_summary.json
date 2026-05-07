@@ -1,0 +1,100 @@
+{
+    "phase": "1.2_stratified_train_test_split",
+    "input_file": "outputs/phase1_1_initial_cleaning/slld_phase1_1_clean_raw.csv",
+    "train_output_file": "outputs/phase1_2_train_test_split/slld_phase1_2_train_raw.csv",
+    "test_output_file": "outputs/phase1_2_train_test_split/slld_phase1_2_test_raw.csv",
+    "n_rows_full_dataset": 535,
+    "n_rows_train": 428,
+    "n_rows_test": 107,
+    "n_columns": 68,
+    "n_id_columns": 3,
+    "n_feature_columns": 65,
+    "id_columns": [
+        "entry_id",
+        "word",
+        "target_word_class"
+    ],
+    "target_column": "target_word_class",
+    "valid_target_classes": [
+        "adjective",
+        "noun",
+        "verb"
+    ],
+    "test_size": 0.2,
+    "train_size": 0.8,
+    "random_state": 42,
+    "stratification_column": "target_word_class",
+    "majority_class_baseline": {
+        "majority_class": "noun",
+        "majority_accuracy": 0.811214953271028
+    },
+    "class_distribution": [
+        {
+            "split": "full_dataset",
+            "target_word_class": "noun",
+            "count": 434,
+            "percent": 81.12149532710279
+        },
+        {
+            "split": "full_dataset",
+            "target_word_class": "verb",
+            "count": 62,
+            "percent": 11.588785046728972
+        },
+        {
+            "split": "full_dataset",
+            "target_word_class": "adjective",
+            "count": 39,
+            "percent": 7.289719626168225
+        },
+        {
+            "split": "train",
+            "target_word_class": "noun",
+            "count": 347,
+            "percent": 81.07476635514018
+        },
+        {
+            "split": "train",
+            "target_word_class": "verb",
+            "count": 50,
+            "percent": 11.682242990654206
+        },
+        {
+            "split": "train",
+            "target_word_class": "adjective",
+            "count": 31,
+            "percent": 7.242990654205607
+        },
+        {
+            "split": "test",
+            "target_word_class": "noun",
+            "count": 87,
+            "percent": 81.30841121495327
+        },
+        {
+            "split": "test",
+            "target_word_class": "verb",
+            "count": 12,
+            "percent": 11.214953271028037
+        },
+        {
+            "split": "test",
+            "target_word_class": "adjective",
+            "count": 8,
+            "percent": 7.476635514018691
+        }
+    ],
+    "missing_values": {
+        "full_dataset_rows_with_missing": 102,
+        "train_rows_with_missing": 81,
+        "test_rows_with_missing": 21
+    },
+    "methodological_decisions": {
+        "split_type": "stratified train/test split",
+        "stratification_reason": "the target classes are strongly imbalanced, so class proportions must be preserved in both train and test sets",
+        "imputation": "not performed in this phase",
+        "standardization": "not performed in this phase",
+        "feature_selection": "not performed in this phase",
+        "reason_for_no_preprocessing_after_split": "later preprocessing steps must be fitted on the training set only to avoid data leakage"
+    }
+}

@@ -1,0 +1,10 @@
+split,target_word_class,count,percent
+full_dataset,noun,434,81.12149532710279
+full_dataset,verb,62,11.588785046728972
+full_dataset,adjective,39,7.289719626168225
+train,noun,347,81.07476635514018
+train,verb,50,11.682242990654206
+train,adjective,31,7.242990654205607
+test,noun,87,81.30841121495327
+test,verb,12,11.214953271028037
+test,adjective,8,7.476635514018691

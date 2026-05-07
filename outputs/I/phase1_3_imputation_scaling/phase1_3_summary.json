@@ -1,0 +1,58 @@
+{
+    "phase": "1.3_imputation_and_standardization",
+    "train_input_file": "outputs/phase1_2_train_test_split/slld_phase1_2_train_raw.csv",
+    "test_input_file": "outputs/phase1_2_train_test_split/slld_phase1_2_test_raw.csv",
+    "train_imputed_file": "outputs/phase1_3_imputation_scaling/slld_phase1_3_train_imputed.csv",
+    "test_imputed_file": "outputs/phase1_3_imputation_scaling/slld_phase1_3_test_imputed.csv",
+    "train_scaled_file": "outputs/phase1_3_imputation_scaling/slld_phase1_3_train_scaled.csv",
+    "test_scaled_file": "outputs/phase1_3_imputation_scaling/slld_phase1_3_test_scaled.csv",
+    "n_train_rows": 428,
+    "n_test_rows": 107,
+    "n_columns": 68,
+    "n_id_columns": 3,
+    "n_feature_columns": 65,
+    "id_columns": [
+        "entry_id",
+        "word",
+        "target_word_class"
+    ],
+    "target_column": "target_word_class",
+    "imputation": {
+        "strategy": "median",
+        "fitted_on": "train_set_only",
+        "applied_to": [
+            "train_set",
+            "test_set"
+        ],
+        "imputation_values_file": "outputs/phase1_3_imputation_scaling/imputation_values.csv"
+    },
+    "standardization": {
+        "method": "StandardScaler",
+        "fitted_on": "train_set_only_after_imputation",
+        "applied_to": [
+            "train_set",
+            "test_set"
+        ],
+        "scaling_parameters_file": "outputs/phase1_3_imputation_scaling/scaling_parameters.csv"
+    },
+    "missing_values": {
+        "train_rows_with_missing_before_imputation": 81,
+        "test_rows_with_missing_before_imputation": 21,
+        "train_rows_with_missing_after_imputation": 0,
+        "test_rows_with_missing_after_imputation": 0
+    },
+    "standardization_diagnostics_train": {
+        "max_abs_feature_mean_after_scaling": 2.4487162038461394e-16,
+        "min_feature_std_after_scaling": 0.9999999999999998,
+        "max_feature_std_after_scaling": 1.0000000000000002
+    },
+    "methodological_decisions": {
+        "data_leakage_control": "imputer and scaler are fitted only on the training set; the test set is only transformed",
+        "median_imputation_reason": "median imputation is simple, robust, reproducible and appropriate as a first preprocessing strategy for numeric semantic ratings",
+        "standardization_reason": "standardization is required before PCA, clustering, distance-based methods and regularized models such as Ridge, LASSO and Elastic Net",
+        "pca": "not performed in this phase",
+        "clustering": "not performed in this phase",
+        "feature_selection": "not performed in this phase",
+        "model_training": "not performed in this phase"
+    }
+}
