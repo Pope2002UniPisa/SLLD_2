@@ -30,8 +30,8 @@ from sklearn.model_selection import train_test_split
 # 1. Paths
 # ------------------------------------------------------------
 
-PHASE1_1_DIR = Path("./outputs/phase1_1_initial_cleaning")
-OUTPUT_DIR = Path("./outputs/phase1_2_train_test_split")
+PHASE1_1_DIR = Path("./outputs/I//phase1_1_initial_cleaning")
+OUTPUT_DIR = Path("./outputs/I//phase1_2_train_test_split")
 
 INPUT_FILE = PHASE1_1_DIR / "slld_phase1_1_clean_raw.csv"
 

@@ -31,8 +31,8 @@ from sklearn.preprocessing import StandardScaler
 # 1. Paths
 # ------------------------------------------------------------
 
-PHASE1_2_DIR = Path("./outputs/phase1_2_train_test_split")
-OUTPUT_DIR = Path("./outputs/phase1_3_imputation_scaling")
+PHASE1_2_DIR = Path("./outputs/I//phase1_2_train_test_split")
+OUTPUT_DIR = Path("./outputs/I//phase1_3_imputation_scaling")
 
 TRAIN_INPUT_FILE = PHASE1_2_DIR / "slld_phase1_2_train_raw.csv"
 TEST_INPUT_FILE = PHASE1_2_DIR / "slld_phase1_2_test_raw.csv"

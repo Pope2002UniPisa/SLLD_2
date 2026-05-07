@@ -27,7 +27,7 @@ import pandas as pd
 # ------------------------------------------------------------
 
 DATASET_DIR = Path("./dataset")
-OUTPUT_DIR = Path("./outputs/phase1_1_initial_cleaning")
+OUTPUT_DIR = Path("./outputs/I//phase1_1_initial_cleaning")
 
 INPUT_FILE = DATASET_DIR / "slld_binder_Xy_65_features.csv"
 
