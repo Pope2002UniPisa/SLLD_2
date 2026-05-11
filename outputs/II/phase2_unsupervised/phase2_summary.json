@@ -1,0 +1,92 @@
+{
+    "phase": "2_unsupervised_analysis",
+    "input_file": "outputs/I/phase1_3_imputation_scaling/slld_phase1_3_train_scaled.csv",
+    "n_observations": 428,
+    "n_features": 65,
+    "pca": {
+        "n_components_full": 65,
+        "n_pcs_75pct_variance": 10,
+        "cpve_pc1": 0.22659286571172163,
+        "cpve_pc2": 0.1342100122577738,
+        "cpve_pc1_pc2": 0.3608028779694954,
+        "n_pcs_used_for_clustering": 10
+    },
+    "kmeans": {
+        "k_range": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "best_k_by_silhouette": 14,
+        "best_silhouette_score": 0.3099,
+        "silhouette_k2": 0.2172,
+        "silhouette_k3": 0.2169,
+        "silhouette_k10": 0.2788
+    },
+    "ahc": {
+        "linkage": "complete",
+        "metric": "euclidean",
+        "k_range": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "best_k_by_silhouette": 14,
+        "best_silhouette_score": 0.2381,
+        "silhouette_k2": 0.205,
+        "silhouette_k3": 0.1459,
+        "silhouette_k10": 0.2189
+    },
+    "comparison_with_labels_k3": {
+        "kmeans": {
+            "ari": 0.0301,
+            "nmi": 0.072
+        },
+        "ahc": {
+            "ari": -0.0667,
+            "nmi": 0.0425
+        }
+    },
+    "comparison_with_labels_best_k_kmeans_14": {
+        "ari": 0.0317,
+        "nmi": 0.191
+    },
+    "comparison_with_labels_best_k_ahc_14": {
+        "ari": 0.0129,
+        "nmi": 0.1353
+    },
+    "methodological_decisions": {
+        "pca_role": "PCA used as a denoising step before clustering; the first n_pcs_75pct_variance components are retained",
+        "clustering_space": "PCA-reduced space (first ~10 PCs)",
+        "kmeans_n_init": 20,
+        "ahc_linkage": "complete",
+        "k_selection_criterion": "elbow/Hartigan index for K-Means + average silhouette score for both methods",
+        "label_comparison_k": 3,
+        "label_comparison_metrics": [
+            "adjusted_rand_score",
+            "normalized_mutual_info"
+        ]
+    }
+}
