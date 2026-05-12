@@ -1,0 +1,4 @@
+check,passed,details
+train_columns_match_feature_names,True,Train columns exactly match feature_names.json
+test_columns_match_feature_names,True,Test columns exactly match feature_names.json
+train_test_columns_same_order,True,Train and test columns are aligned

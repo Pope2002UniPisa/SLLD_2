@@ -1,0 +1,4 @@
+split,n_observations,n_features,n_missing_values,n_Thing,pct_Thing,n_Action,pct_Action,n_Property,pct_Property,phase3_1_source_dir
+train,428,65,0,347,0.8107476635514018,50,0.11682242990654206,31,0.07242990654205607,package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks
+test,107,65,0,87,0.8130841121495327,12,0.11214953271028037,8,0.07476635514018691,package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks
+combined,535,65,0,434,0.811214953271028,62,0.11588785046728972,39,0.07289719626168224,package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks

@@ -1,0 +1,7 @@
+split,class_raw,class_display,count,proportion
+train,noun,Thing,347,0.8107476635514018
+train,verb,Action,50,0.11682242990654206
+train,adjective,Property,31,0.07242990654205607
+test,noun,Thing,87,0.8130841121495327
+test,verb,Action,12,0.11214953271028037
+test,adjective,Property,8,0.07476635514018691
