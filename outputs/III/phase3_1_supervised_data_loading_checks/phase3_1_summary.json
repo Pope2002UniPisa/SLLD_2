@@ -1,0 +1,44 @@
+{
+  "phase": "PHASE 3.1 — SUPERVISED ANALYSIS: DATA LOADING AND CHECKS",
+  "input_dir": "phase1_3_imputation_scaling",
+  "train_file": "phase1_3_imputation_scaling/slld_phase1_3_train_scaled.csv",
+  "test_file": "phase1_3_imputation_scaling/slld_phase1_3_test_scaled.csv",
+  "output_dir": "outputs/III/phase3_1_supervised_data_loading_checks",
+  "target_col": "target_word_class",
+  "id_cols": [
+    "entry_id",
+    "word",
+    "target_word_class"
+  ],
+  "class_names": [
+    "Thing",
+    "Action",
+    "Property"
+  ],
+  "label_map": {
+    "noun": "Thing",
+    "verb": "Action",
+    "adjective": "Property"
+  },
+  "n_train_observations": 428,
+  "n_test_observations": 107,
+  "n_total_observations": 535,
+  "n_features": 65,
+  "feature_names_file": "outputs/III/phase3_1_supervised_data_loading_checks/feature_names.json",
+  "class_names_file": "outputs/III/phase3_1_supervised_data_loading_checks/class_names.json",
+  "n_missing_cells_train": 0,
+  "n_missing_cells_test": 0,
+  "n_exact_duplicate_rows_total": 0,
+  "n_duplicated_word_forms_total": 1,
+  "outputs": {
+    "X_train": "outputs/III/phase3_1_supervised_data_loading_checks/slld_phase3_1_X_train.csv",
+    "y_train": "outputs/III/phase3_1_supervised_data_loading_checks/slld_phase3_1_y_train.csv",
+    "X_test": "outputs/III/phase3_1_supervised_data_loading_checks/slld_phase3_1_X_test.csv",
+    "y_test": "outputs/III/phase3_1_supervised_data_loading_checks/slld_phase3_1_y_test.csv",
+    "dataset_shape_summary": "outputs/III/phase3_1_supervised_data_loading_checks/dataset_shape_summary.csv",
+    "class_distribution": "outputs/III/phase3_1_supervised_data_loading_checks/class_distribution.csv",
+    "missing_values_report": "outputs/III/phase3_1_supervised_data_loading_checks/missing_values_report.csv",
+    "duplicate_rows": "outputs/III/phase3_1_supervised_data_loading_checks/duplicate_rows.csv",
+    "duplicated_word_forms": "outputs/III/phase3_1_supervised_data_loading_checks/duplicated_word_forms.csv"
+  }
+}

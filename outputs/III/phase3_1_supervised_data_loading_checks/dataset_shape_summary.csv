@@ -1,0 +1,4 @@
+split,n_observations,n_total_columns,n_identifier_columns,n_features,target_col,n_missing_cells,n_exact_duplicate_rows,n_duplicated_entry_ids,n_duplicated_word_forms
+train,428,68,3,65,target_word_class,0,0,0,1
+test,107,68,3,65,target_word_class,0,0,0,0
+total,535,68,3,65,target_word_class,0,0,0,1
