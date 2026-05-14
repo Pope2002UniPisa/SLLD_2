@@ -19,8 +19,8 @@
 \renewcommand\section{\@startsection {section}{1}{\z@}%
 %     {-3.5ex \@plus -1ex \@minus -.2ex}%  before skip
 %     {2.3ex \@plus.2ex}% after skip
-     {-2.0ex \@plus -1ex \@minus -.2ex}%  before skip
-     {1.3ex \@plus.2ex}% after skip
+     {-1.2ex \@plus -1ex \@minus -.2ex}%  before skip
+     {0.6ex \@plus.2ex}% after skip
      {\normalfont\Large\bfseries}}
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
 %     {-3.25ex\@plus -1ex \@minus -.2ex}% 
@@ -29,10 +29,14 @@
      {1.0ex \@plus .2ex}%
      {\normalfont\large\bfseries}}
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
-%     {-3.25ex\@plus -1ex \@minus -.2ex}% 
+%     {-3.25ex\@plus -1ex \@minus -.2ex}%
 %     {1.5ex \@plus .2ex}%
-     {-2.0ex\@plus -1ex \@minus -.2ex}% 
+     {-2.0ex\@plus -1ex \@minus -.2ex}%
      {0.75ex \@plus .2ex}%
+     {\normalfont\normalsize\bfseries}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+     {1.0ex \@plus .5ex \@minus .2ex}%
+     {-1em}%
      {\normalfont\normalsize\bfseries}}
 
 %---- Table of Contents and sectioning  depth
@@ -132,10 +136,10 @@
 \begin{center}
 \hrule
 \vspace*{1mm}
-{\huge\bfseries \title}\\[5mm]
+{\LARGE\bfseries \title}\\[5mm]
 \hrule
 \vspace*{4mm}
-{\Large\bfseries \author}\\[3mm]
+{\large\mdseries \author}\\[3mm]
 \mydate
 \end{center}
 }}
