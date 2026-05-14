@@ -1,0 +1,419 @@
+\documentclass[10pt,final]{article}
+
+% Encoding and language
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+
+% Graphics
+\usepackage{graphicx}
+\setkeys{Gin}{draft=false}
+
+% Page layout
+\usepackage[
+  paperheight=11in,
+  paperwidth=8.45in,
+  top=0.35in,
+  bottom=1in,
+  left=1.1in,
+  right=1.1in
+]{geometry}
+
+% Spacing
+\usepackage{setspace}
+\setstretch{1.0}
+
+% Math and symbols
+\usepackage{amsmath,amssymb,amsthm}
+
+% Better text layout
+\usepackage[activate={expansion,kerning,tracking,spacing}]{microtype}
+
+% Custom title block
+\usepackage{titling}
+
+% Section style
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\bfseries\large}
+  {\thesection.}{0.5em}{}
+\titleformat{\subsection}
+  {\normalfont\bfseries}
+  {\thesubsection}{0.5em}{}
+
+% Remove date
+\date{}
+
+% Paragraph style
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+
+% Custom title
+\pretitle{%
+\begin{center}
+\includegraphics[height=2.2cm]{logoUnipi_black.png}
+\hspace{1.8cm}
+\includegraphics[height=2.2cm]{logosantanna.png}
+
+\vspace{1.5em}
+\rule{\textwidth}{0.5pt}
+\vspace{1.3em}
+
+{\LARGE\bfseries\linespread{1.2}\selectfont}
+}
+
+\posttitle{%
+\par\vspace{2em}
+\rule{\textwidth}{0.5pt}
+\end{center}
+\vspace{1.2em}
+}
+
+\preauthor{%
+\begin{center}
+\normalsize
+}
+
+\postauthor{%
+\end{center}
+\vspace{1em}
+}
+
+\predate{}
+\postdate{}
+
+\title{%
+{\large\bfseries\selectfont
+\begin{tabular}{c}
+% Process mining analysis of arbitrage opportunities for tri-listed stocks
+Modeling Arbitrage Opportunities in Tri-Listed Stocks \\ [0.3em]
+Through Event-Based Process Mining
+\end{tabular}
+}%
+}
+
+\author{%
+  \textbf{Leonardo Pratelli}\thanks{l.pratelli3@studenti.unipi.it; s3l.pratelli@santannapisa.it}\\[0.7em]
+  \textit{University of Pisa and Scuola Superiore Sant'Anna}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+{\large\bfseries Abstract}
+\end{center}
+
+This project analyzes the phenomenon of arbitrage opportunities between financial markets, with particular reference to securities simultaneously listed on multiple exchanges. The focus is on three companies: Unilever (UL), Shell (SHELL), and HSBC, considered as representative case studies of multi-listed securities.
+
+The main objective is to identify and analyze the time windows in which the same asset presents price differences across different trading venues, such as to generate potential arbitrage opportunities. To this end, high-frequency financial data and a Python-based framework for data cleaning, alignment, and transformation are employed.
+
+The project also integrates a simulation component, necessary to reconstruct markets that are not directly observable, and a validation phase to compare the statistical properties of simulated data with real data. The identified opportunities are then analyzed through a trading simulation that accounts for transaction costs and risk.
+
+Finally, a process mining approach is introduced to represent the dynamics of arbitrage opportunities as sequences of events, enabling a structured and interpretive view of the phenomenon.
+
+Overall, the work aims to provide a first integrated analysis combining quantitative finance, simulation, and process mining, offering useful tools for better understanding the dynamics of multi-venue financial markets.
+\newpage
+\section{Introduction}
+
+
+\section{...}
+
+
+\section{Normalizzazione dei prezzi}
+
+Sia $P_i^{(c_i)}(t)$ il prezzo di un asset nel mercato $i$ espresso nella valuta locale $c_i$.
+
+La conversione in euro è definita come:
+
+\[
+P_i^{(EUR)}(t) = P_i^{(c_i)}(t) \cdot FX_{c_i \to EUR}(t)
+\]
+
+dove:
+\begin{itemize}
+    \item $P_i^{(c_i)}(t)$ è il prezzo nel mercato $i$ in valuta locale
+    \item $FX_{c_i \to EUR}(t)$ è il tasso di cambio dalla valuta $c_i$ all'euro
+    \item $P_i^{(EUR)}(t)$ è il prezzo convertito in euro
+\end{itemize}
+
+
+\section{Definizione del gap di arbitraggio}
+
+Il differenziale di prezzo tra due mercati $i$ e $j$ è:
+
+\[
+gap_{i,j}(t) = P_i^{(EUR)}(t) - P_j^{(EUR)}(t)
+\]
+
+dove:
+\begin{itemize}
+    \item $gap_{i,j}(t)$ rappresenta la differenza di prezzo tra i due mercati
+\end{itemize}
+
+
+\section{Condizione di arbitraggio}
+
+Esiste un'opportunità di arbitraggio se:
+
+\[
+|gap_{i,j}(t)| > threshold_{i,j}(t)
+\]
+
+dove:
+\begin{itemize}
+    \item $threshold_{i,j}(t)$ è la soglia minima necessaria per coprire costi e rischio
+\end{itemize}
+
+
+\section{Soglia di arbitraggio}
+
+La soglia è definita come:
+
+\[
+threshold_{i,j}(t) = cost_{unit} + buffer_{fixed} + buffer_{risk}(t)
+\]
+
+dove:
+\begin{itemize}
+    \item $cost_{unit}$ è il costo di transazione per unità
+    \item $buffer_{fixed}$ è un margine minimo richiesto
+    \item $buffer_{risk}(t)$ è il contributo dovuto al rischio
+\end{itemize}
+
+
+\section{Buffer di rischio}
+
+Il buffer di rischio è definito come:
+
+\[
+buffer_{risk}(t) = \lambda \cdot \sigma(t) \cdot \sqrt{\tau}
+\]
+
+dove:
+\begin{itemize}
+    \item $\lambda$ è il coefficiente di avversione al rischio
+    \item $\sigma(t)$ è la volatilità locale del gap
+    \item $\tau$ è l'orizzonte temporale espresso in secondi
+\end{itemize}
+
+
+\section{Profitto per trade}
+
+Il profitto netto per unità è:
+
+\[
+\pi(t) = |gap_{i,j}(t)| - threshold_{i,j}(t)
+\]
+
+dove:
+\begin{itemize}
+    \item $\pi(t)$ è il profitto netto per unità
+\end{itemize}
+
+
+\section{Profitto totale}
+
+Il profitto totale per un blocco di dimensione $Q$ è:
+
+\[
+\Pi(t) = Q \cdot \pi(t)
+\]
+
+dove:
+\begin{itemize}
+    \item $Q$ è la quantità scambiata
+    \item $\Pi(t)$ è il profitto totale
+\end{itemize}
+
+\subsection{The Mechanics of Modern Electronic Markets}
+
+Law part...
+
+\section{Conclusioni}
+
+Something else...
+
+\section{Analisi dei Risultati di Simulazione}
+
+Questa sezione presenta un'analisi empirica dei risultati ottenuti attraverso il framework di simulazione, con particolare attenzione alla validazione statistica del modello, alle caratteristiche delle finestre di arbitraggio e alle performance economiche della strategia.
+
+\subsection{Validazione della Simulazione}
+
+La validazione è stata condotta confrontando le principali proprietà statistiche dei dati simulati con quelle osservate nel mercato reale. In particolare, sono state analizzate la volatilità dei rendimenti (ret\_std) e lo spread medio (spread\_mean).
+
+I risultati mostrano che:
+
+\begin{itemize}
+    \item Per i titoli UL e SHELL, la volatilità simulata risulta ben allineata a quella reale, indicando che il modello è in grado di riprodurre correttamente la dinamica dei prezzi a livello tick-by-tick.
+    \item Per HSBC, la volatilità rimane sottostimata rispetto al reale (circa il 40\% in meno). Questo è coerente con la natura dell'asset (ADR), la cui dinamica è influenzata da mercati non direttamente osservati (Hong Kong), difficili da replicare in assenza di dati reali.
+    \item Lo spread medio simulato risulta molto vicino al reale, in particolare per la venue AMS, mentre per LSE si osserva una leggera sottostima (~15\%), attribuibile agli effetti di conversione valutaria.
+\end{itemize}
+
+Tuttavia, permane una criticità importante:
+
+\begin{itemize}
+    \item La variabilità dello spread (spread\_std) risulta ancora significativamente inferiore rispetto al mercato reale (circa un ordine di grandezza). Questo implica che la simulazione genera condizioni di mercato più stabili rispetto alla realtà, riducendo la presenza di picchi di liquidità e disallineamenti improvvisi.
+\end{itemize}
+
+Questo limite suggerisce che, pur essendo corretta in termini di primi momenti statistici, la simulazione non cattura completamente la microstruttura del mercato.
+
+\subsection{Finestre di Arbitraggio}
+
+L'analisi delle opportunità di arbitraggio evidenzia la presenza di un numero significativo di finestre temporali in cui il differenziale di prezzo tra mercati è positivo e potenzialmente sfruttabile.
+
+In particolare:
+
+\begin{itemize}
+    \item Le finestre hanno una durata media compresa tra 200 e 300 millisecondi.
+    \item Il gap medio per unità è compreso tra 0.05 e 0.08 EUR.
+    \item Il numero di finestre è proporzionale alla dimensione del dataset: SHELL presenta il numero più elevato di opportunità grazie alla maggiore quantità di dati disponibili.
+\end{itemize}
+
+Un risultato particolarmente rilevante è la distribuzione simmetrica delle opportunità tra le due direzioni (vendita su un mercato e acquisto sull'altro, e viceversa). Questo indica l'assenza di bias sistematici nella simulazione, suggerendo che le inefficienze generate sono di natura puramente stocastica e non strutturale.
+
+Dal punto di vista economico, questo è coerente con mercati efficienti, in cui le opportunità di arbitraggio emergono temporaneamente ma non persistono in una direzione specifica.
+
+\subsection{Performance della Strategia di Trading}
+
+La simulazione dell'esecuzione delle strategie di arbitraggio mostra risultati coerenti tra i diversi titoli analizzati.
+
+In particolare:
+
+\begin{itemize}
+    \item Il profitto lordo aggregato varia significativamente tra i titoli, riflettendo la diversa frequenza delle opportunità.
+    \item Il profitto netto, dopo costi di transazione e buffer di rischio, si attesta intorno al 37\%-38\% del profitto lordo.
+\end{itemize}
+
+Questo risultato è particolarmente significativo, in quanto indica che:
+
+\begin{itemize}
+    \item I costi di transazione e il rischio di esecuzione assorbono circa il 60\% del valore teorico dell'arbitraggio.
+    \item La strategia rimane comunque profittevole, ma con margini ridotti, in linea con quanto osservato nei mercati ad alta frequenza.
+\end{itemize}
+
+La stabilità del margine netto tra diversi asset suggerisce che il modello di costo e rischio implementato è coerente e ben calibrato.
+
+\subsection{Limiti del Modello}
+
+Nonostante i risultati complessivamente positivi, emergono alcuni limiti strutturali:
+
+\begin{itemize}
+    \item La bassa variabilità dello spread implica una distribuzione delle opportunità troppo uniforme rispetto alla realtà.
+    \item L'assenza di shock estremi e dinamiche di volatilità clusterizzata riduce la presenza di eventi ad alto profitto.
+    \item La simulazione delle venue non incorpora pienamente effetti di latenza e competizione tra operatori, tipici dei contesti HFT reali.
+\end{itemize}
+
+Questi elementi suggeriscono che il modello rappresenta una buona approssimazione di primo livello, ma richiede ulteriori estensioni per catturare completamente la complessità della microstruttura di mercato.
+
+\subsection{Conclusione}
+
+In sintesi, i risultati mostrano che il framework proposto è in grado di:
+
+\begin{itemize}
+    \item Riprodurre realisticamente i principali indicatori di mercato (prezzi, volatilità, spread medio);
+    \item Identificare e modellare in modo coerente le opportunità di arbitraggio;
+    \item Simulare strategie di trading con performance economiche plausibili.
+\end{itemize}
+
+Tuttavia, il modello rimane una rappresentazione semplificata della realtà. L'integrazione di dinamiche più complesse, come la variabilità dello spread e gli effetti di latenza, rappresenta una direzione naturale per sviluppi futuri.
+
+\section{Sitografia}
+
+\begin{itemize}
+
+\item \url{https://it.wikipedia.org/wiki/Process_mining#cite_note-9}
+\item \url{https://www.processmining.org/}
+\item \url{https://sourceforge.net/projects/prom/}
+\item \url{https://sourceforge.net/projects/promimport/}
+\item \url{https://it.wikipedia.org/wiki/Data_mining}
+\item \url{https://it.wikipedia.org/wiki/Business_process_modeling}
+\item \url{https://bit.ly/4vEvbE9}
+\item \url{https://it.wikipedia.org/wiki/Rete_di_Petri}
+\item \url{https://www.youtube.com/watch?v=5thuFbUQ7Qg}
+\item \url{https://en.wikipedia.org/wiki/Alpha_algorithm}
+\item \url{https://bi-rex.it/process-mining-efficienza-compliance-automazione/}
+\item \url{https://www.math.unipd.it/~deleoni/documenti/MondoDigitale.pdf}
+\item \url{https://www.tf-pm.org/}
+\item \url{https://www.xes-standard.org/}
+\item \url{https://ieeexplore.ieee.org/document/10267858}
+\item \url{https://www.tf-pm.org/resources/manifesto}
+\item \url{https://short.do/YMpMgz}
+\item \url{https://www.youtube.com/watch?v=HEb_ukW7rEw}
+\item \url{https://ais.win.tue.nl/coselog/wiki/index.html}
+\item \url{https://www.diag.uniroma1.it/deluca/automation/Automazione_RetiPetri.pdf}
+\item \url{https://eprints.qut.edu.au/74865/1/bpiChallenge.pdf}
+\item \url{https://connect2.euronext.com/en/data/client-specifications}
+\item \url{https://www.bis.org/publ/work955.pdf}
+\item \url{https://short.do/O3nxWD}
+\item \url{https://databento.com/docs/}
+\item \url{https://realpython.com/ref/glossary/type-hint/}
+\item \url{https://short.do/_w43ck}
+\item \url{https://short.do/bNZ2Ln}
+\item \url{https://github.com/databento/databento-python}
+\item \url{https://shortlink.uk/1t6x7}
+\item \url{https://shortlink.uk/1t6xj}
+\item \url{https://www.vdaalst.com/publications/p609.pdf}
+\item \url{https://www.vdaalst.com/publications/p1163.pdf}
+\item \url{https://www.vdaalst.rwth-aachen.de/publications/p1056.pdf}
+\item \url{https://datashop.cboe.com/cboe-us-equities-pitch}
+\item \url{http://bit.ly/41JzBfb}
+\item \url{https://data.nasdaq.com/databases/NTV}
+\item \url{https://bit.ly/4dXQ72C}
+\item \url{https://dxfeed.com/}
+\item \url{https://finance.yahoo.com/quote/UNA.AS/}
+\item \url{https://it.finance.yahoo.com/quote/ULVR.L/}
+\item \url{https://wiseequities.com/pdffiles/arbitrage_-_jan_25_07.pdf}
+
+\end{itemize}
+
+\section{Bibliografia}
+
+\begin{itemize}
+
+\item W. M. P. van der Aalst, A. Weijters, L. Maruster (2004), 
+\textit{Workflow Mining: Discovering Process Models from Event Logs}, 
+IEEE Transactions on Knowledge and Data Engineering.
+
+\item W. M. P. van der Aalst, J. Carmona (2022), 
+\textit{Process Mining Handbook}, Springer. 
+\href{https://doi.org/10.1007/978-3-031-08848-3}{DOI: 10.1007/978-3-031-08848-3}
+:contentReference[oaicite:0]{index=0}
+
+\item W. M. P. van der Aalst (2016), 
+\textit{Process Mining: Data Science in Action}, Springer.
+
+\item IEEE Task Force on Process Mining (2012), 
+\textit{Process Mining Manifesto}.
+
+\item A. Burattin (2015), 
+\textit{Process Mining Techniques in Business Environments}.
+
+\item M. Dumas, M. La Rosa, J. Mendling, H. A. Reijers (2018), 
+\textit{Fundamentals of Business Process Management}, Springer.
+
+\item G. Cacciola, R. Conforti, H. Nguyen (2014), 
+\textit{Rabobank: A Process Mining Case Study – BPI Challenge 2014}.
+:contentReference[oaicite:1]{index=1}
+
+\item C. Di Francescomarino, 
+\textit{Clustering-Based Predictive Process Monitoring}.
+
+\item W. M. P. van der Aalst, 
+\textit{Time Prediction Based on Process Mining}.
+
+\item W. M. P. van der Aalst, 
+\textit{Object-Centric Process Mining: Dealing with Divergence and Convergence in Event Data}.
+
+\item W. M. P. van der Aalst, 
+\textit{Discovering Object-Centric Petri Nets}.
+
+\item M. Aquilina, E. Budish, P. O’Neill (2021), 
+\textit{Quantifying the High-Frequency Trading “Arms Race”}, BIS Working Paper No. 955.
+:contentReference[oaicite:2]{index=2}
+
+\end{itemize}
+
+\end{document}
