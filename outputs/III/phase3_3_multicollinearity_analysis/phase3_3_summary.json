@@ -1,0 +1,69 @@
+{
+  "phase": "3.3_multicollinearity_analysis",
+  "input_phase3_1_dir": "package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks",
+  "n_train_observations": 428,
+  "n_test_observations": 107,
+  "n_features": 65,
+  "correlation": {
+    "n_feature_pairs": 2080,
+    "max_abs_correlation": 0.9367777773303074,
+    "mean_abs_correlation": 0.21908735840573842,
+    "median_abs_correlation": 0.16547929180408227,
+    "n_pairs_abs_corr_ge_0_80": 22,
+    "n_pairs_abs_corr_ge_0_90": 2,
+    "threshold_counts": [
+      {
+        "abs_correlation_threshold": 0.5,
+        "n_pairs": 199,
+        "pct_pairs": 0.09567307692307692
+      },
+      {
+        "abs_correlation_threshold": 0.7,
+        "n_pairs": 53,
+        "pct_pairs": 0.02548076923076923
+      },
+      {
+        "abs_correlation_threshold": 0.8,
+        "n_pairs": 22,
+        "pct_pairs": 0.010576923076923078
+      },
+      {
+        "abs_correlation_threshold": 0.9,
+        "n_pairs": 2,
+        "pct_pairs": 0.0009615384615384616
+      },
+      {
+        "abs_correlation_threshold": 0.95,
+        "n_pairs": 0,
+        "pct_pairs": 0.0
+      }
+    ]
+  },
+  "vif": {
+    "max_finite_vif": 22.987417965421756,
+    "median_finite_vif": 7.130560907949046,
+    "n_infinite_vif": 0,
+    "n_vif_ge_5": 51,
+    "n_vif_ge_10": 17
+  },
+  "clusters": {
+    "distance": "1 - abs(Pearson correlation)",
+    "linkage": "complete",
+    "distance_threshold": 0.19999999999999996,
+    "equivalent_abs_correlation_threshold": 0.8,
+    "n_clusters": 53,
+    "n_non_singleton_clusters": 9,
+    "largest_cluster_size": 3
+  },
+  "redundancy_candidates": {
+    "n_candidates": 51,
+    "note": "Diagnostic list only. No feature is removed in Phase 3.3."
+  },
+  "outputs": {
+    "correlation_matrix": "outputs/III/phase3_3_multicollinearity_analysis/correlation_matrix_train.csv",
+    "high_correlation_pairs": "outputs/III/phase3_3_multicollinearity_analysis/high_correlation_pairs.csv",
+    "vif_table": "outputs/III/phase3_3_multicollinearity_analysis/vif_table.csv",
+    "feature_clusters": "outputs/III/phase3_3_multicollinearity_analysis/feature_clusters.csv",
+    "redundant_feature_candidates": "outputs/III/phase3_3_multicollinearity_analysis/redundant_feature_candidates.csv"
+  }
+}

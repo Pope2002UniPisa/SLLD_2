@@ -1,0 +1,6 @@
+check,passed,train_value,test_value
+same_number_of_features_train_vs_test,True,65,65
+same_feature_order_train_vs_test,True,vision|bright|dark|color|pattern...,vision|bright|dark|color|pattern...
+same_feature_names_as_phase3_1_metadata,True,65,65
+all_train_features_numeric,True,65,65
+all_test_features_numeric,True,65,65

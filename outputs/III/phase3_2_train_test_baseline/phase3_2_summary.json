@@ -1,0 +1,42 @@
+{
+  "phase": "PHASE 3.2 — SUPERVISED ANALYSIS: TRAIN/TEST BASELINE",
+  "input_dir": "outputs/III/phase3_1_supervised_data_loading_checks",
+  "output_dir": "outputs/III/phase3_2_train_test_baseline",
+  "model_kind": "unpenalized_multinomial_logistic_regression",
+  "model": "multinomial_logistic_regression",
+  "target_col": "target_word_class",
+  "class_names": [
+    "Thing",
+    "Action",
+    "Property"
+  ],
+  "class_order_raw": [
+    "noun",
+    "verb",
+    "adjective"
+  ],
+  "class_order_display": [
+    "Thing",
+    "Action",
+    "Property"
+  ],
+  "n_train_observations": 428,
+  "n_test_observations": 107,
+  "n_features": 65,
+  "train_accuracy": 1.0,
+  "train_macro_f1": 1.0,
+  "test_accuracy": 0.9532710280373832,
+  "test_macro_f1": 0.8903962101636519,
+  "cv_macro_f1_mean": 0.8594055115903769,
+  "cv_macro_f1_std": 0.044796026849620314,
+  "feature_alignment_passed": true,
+  "n_zero_variance_features_train": 0,
+  "outputs": {
+    "baseline_metrics_train_test": "outputs/III/phase3_2_train_test_baseline/baseline_metrics_train_test.csv",
+    "baseline_classification_report": "outputs/III/phase3_2_train_test_baseline/baseline_classification_report.csv",
+    "baseline_confusion_matrix_test": "outputs/III/phase3_2_train_test_baseline/baseline_confusion_matrix_test.csv",
+    "baseline_cv_scores": "outputs/III/phase3_2_train_test_baseline/baseline_cv_scores.csv",
+    "baseline_coefficients": "outputs/III/phase3_2_train_test_baseline/baseline_coefficients.csv",
+    "baseline_model": "outputs/III/phase3_2_train_test_baseline/baseline_model.pkl"
+  }
+}

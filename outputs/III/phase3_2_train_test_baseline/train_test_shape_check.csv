@@ -1,0 +1,3 @@
+split,n_observations_X,n_observations_y,n_features,X_y_same_length
+train,428,428,65,True
+test,107,107,65,True

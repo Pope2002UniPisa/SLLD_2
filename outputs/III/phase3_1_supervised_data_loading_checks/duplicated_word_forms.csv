@@ -1,0 +1,3 @@
+split,entry_id,word,target_word_class,target_display
+train,27,used,adjective,Property
+train,231,used,verb,Action
