@@ -1,0 +1,14 @@
+# Fdb version 4
+["pdflatex"] 1778750622.50777 "/Users/leonardopratelli/Desktop/SLLD_2/latex/main.tex" "main.pdf" "main" 1778750622.62575 2
+  "/Users/leonardopratelli/Desktop/SLLD_2/latex/main.tex" 1778750622.00303 159164 38bdcbd623df78cbf1d0d1c3453f2097 ""
+  "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
+  "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1773933986 3636762 22cd5a2fcb637384bef2830dbd4c795f ""
+  "/usr/local/texlive/2026/texmf.cnf" 1772409725 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
+  "ipgpmaster.cls" 0 -1 0 ""
+  "main.aux" 1778750614.50741 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "main.tex" 1778750622.00303 159164 38bdcbd623df78cbf1d0d1c3453f2097 ""
+  (generated)
+  "main.aux"
+  "main.log"
+  "main.pdf"
+  (rewritten before read)
