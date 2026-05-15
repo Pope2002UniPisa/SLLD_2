@@ -1,0 +1,3 @@
+model,total_coefficients,zero_coefficients,nonzero_coefficients,zero_share,nonzero_share,total_features,active_features,inactive_features,active_feature_share
+LASSO,195,23,172,0.11794871794871795,0.882051282051282,65,65,0,1.0
+Elastic Net,195,3,192,0.015384615384615385,0.9846153846153847,65,65,0,1.0

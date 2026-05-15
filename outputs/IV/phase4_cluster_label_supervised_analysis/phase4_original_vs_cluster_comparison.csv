@@ -1,0 +1,13 @@
+target_type,target,model,n_features,n_classes,accuracy_test,balanced_accuracy_test,macro_precision_test,macro_recall_test,macro_f1_test,weighted_f1_test
+original_labels,Thing_Action_Property,Baseline multinomial,65,,,,,,,
+original_labels,Thing_Action_Property,Baseline multinomial,65,,,,,,,
+original_labels,Thing_Action_Property,LASSO,65,,,,,,,
+original_labels,Thing_Action_Property,LASSO,65,,,,,,,
+original_labels,Thing_Action_Property,Elastic Net,65,,,,,,,
+original_labels,Thing_Action_Property,Elastic Net,65,,,,,,,
+original_labels,Thing_Action_Property,Post-selection Logistic,65,,,,,,,
+original_labels,Thing_Action_Property,Post-selection Logistic,65,,,,,,,
+cluster_labels,kmeans_k3,baseline,65,3.0,0.9813084112149533,0.9743230625583567,0.9839067702552718,0.9743230625583567,0.9788913939559564,0.9812389418954269
+cluster_labels,kmeans_k3,lasso,65,3.0,0.9719626168224299,0.9584500466853408,0.9778503994190269,0.9584500466853408,0.9672401035886052,0.9716716628460589
+cluster_labels,kmeans_k3,elastic_net,65,3.0,0.9813084112149533,0.9743230625583567,0.9839067702552718,0.9743230625583567,0.9788913939559564,0.9812389418954269
+cluster_labels,kmeans_k3,post_selection_logistic,53,3.0,0.9813084112149533,0.9743230625583567,0.9839067702552718,0.9743230625583567,0.9788913939559564,0.9812389418954269

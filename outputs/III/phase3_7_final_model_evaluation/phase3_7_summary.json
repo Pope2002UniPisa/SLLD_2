@@ -1,0 +1,18 @@
+{
+  "phase": "3.7_final_model_evaluation",
+  "input_phase3_1_dir": "package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks",
+  "input_phase3_2_dir_exists": true,
+  "input_phase3_5_dir_exists": true,
+  "input_phase3_6_dir_exists": true,
+  "selected_final_model_by_rule": "Post-selection Logistic",
+  "saved_final_model_object": "LogisticRegression",
+  "n_final_features": 65,
+  "final_test_accuracy": 0.9719626168224299,
+  "final_test_macro_f1": 0.9228522993405258,
+  "class_names": [
+    "Thing",
+    "Action",
+    "Property"
+  ],
+  "outputs_dir": "outputs/III/phase3_7_final_model_evaluation"
+}

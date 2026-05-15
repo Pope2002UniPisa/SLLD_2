@@ -1,0 +1,11 @@
+metric,value
+n_train,428
+n_test,107
+n_features,65
+screening_target_size,65
+train_count_Thing,347
+test_count_Thing,87
+train_count_Action,50
+test_count_Action,12
+train_count_Property,31
+test_count_Property,8

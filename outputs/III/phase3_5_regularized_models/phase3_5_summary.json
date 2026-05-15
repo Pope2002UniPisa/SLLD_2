@@ -1,0 +1,14 @@
+{
+  "phase": "3.5_regularized_models",
+  "input_phase3_1_dir": "package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks",
+  "screened_features_file": "outputs/III/phase3_4_feature_screening/selected_screening_feature_names.json",
+  "n_features_used": 65,
+  "lasso_best_C": 100.0,
+  "elastic_net_best_C": 100.0,
+  "elastic_net_best_l1_ratio": 0.3,
+  "lasso_selected_features": 65,
+  "elastic_net_selected_features": 65,
+  "lasso_test_macro_f1": 0.8903962101636519,
+  "elastic_net_test_macro_f1": 0.8903962101636519,
+  "outputs_dir": "outputs/III/phase3_5_regularized_models"
+}

@@ -1,0 +1,6 @@
+top_k,anova_mi_overlap,anova_logistic_overlap,mi_logistic_overlap,all_three_overlap,combined_vs_anova_overlap,combined_vs_mi_overlap,combined_vs_logistic_overlap
+10,5,7,4,3,8,7,7
+20,13,18,12,12,17,16,16
+30,20,29,20,19,28,22,27
+50,43,49,43,42,46,46,46
+65,65,65,65,65,65,65,65

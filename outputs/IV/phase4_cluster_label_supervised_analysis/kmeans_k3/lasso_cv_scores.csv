@@ -1,0 +1,2 @@
+model,C,penalty,solver,l1_ratio
+lasso,1.0,l1,saga,0.0

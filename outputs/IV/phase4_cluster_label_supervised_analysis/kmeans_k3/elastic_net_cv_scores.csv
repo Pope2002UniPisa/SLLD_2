@@ -1,0 +1,2 @@
+model,C,penalty,solver,l1_ratio
+elastic_net,1.0,elasticnet,saga,0.5

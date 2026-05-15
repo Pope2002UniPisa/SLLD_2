@@ -1,0 +1,42 @@
+{
+  "phase": "3_extra_alternative_classifiers_comparison",
+  "goal": "Compare alternative classifiers on the same selected feature space used by the final post-selection logistic model.",
+  "train_file": "/mnt/data/slld_phase1_3_train_scaled.csv",
+  "test_file": "/mnt/data/slld_phase1_3_test_scaled.csv",
+  "target_column": "target_word_class",
+  "selected_features_source": "/mnt/data/inspect_phase3/outputs/III/phase3_7_final_model_evaluation/final_selected_feature_names.json",
+  "n_train_rows": 428,
+  "n_test_rows": 107,
+  "n_selected_features": 65,
+  "class_names": [
+    "adjective",
+    "noun",
+    "verb"
+  ],
+  "models_tested": [
+    "Dummy majority",
+    "Post-selection Logistic",
+    "SVM linear",
+    "SVM RBF",
+    "Random Forest",
+    "k-NN"
+  ],
+  "cv_folds": 3,
+  "cv_scoring": "f1_macro",
+  "best_test_model_by_macro_f1": {
+    "model": "Random Forest",
+    "accuracy": 0.9813084112149532,
+    "balanced_accuracy": 0.9166666666666666,
+    "macro_f1": 0.9485930735930737,
+    "weighted_f1": 0.9800794999393132,
+    "best_params": "{\"max_depth\": null, \"min_samples_split\": 2, \"n_estimators\": 100}"
+  },
+  "methodological_note": "The same train/test split, target labels and selected semantic features are used for all classifiers. Therefore, differences in test performance reflect classifier behavior rather than changes in preprocessing.",
+  "outputs": {
+    "metrics": "/mnt/data/outputs/III/phase3_extra_classifiers_comparison/alternative_classifiers_metrics.csv",
+    "test_comparison": "/mnt/data/outputs/III/phase3_extra_classifiers_comparison/alternative_classifiers_test_comparison.csv",
+    "best_params": "/mnt/data/outputs/III/phase3_extra_classifiers_comparison/alternative_classifiers_best_params.csv",
+    "classification_report": "/mnt/data/outputs/III/phase3_extra_classifiers_comparison/alternative_classifiers_classification_report_test.csv",
+    "output_dir": "/mnt/data/outputs/III/phase3_extra_classifiers_comparison"
+  }
+}

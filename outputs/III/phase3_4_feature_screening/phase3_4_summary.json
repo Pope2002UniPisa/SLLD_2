@@ -1,0 +1,28 @@
+{
+  "phase": "3.4_feature_screening",
+  "input_phase3_1_dir": "package_phase3_1/outputs/III/phase3_1_supervised_data_loading_checks",
+  "input_phase3_3_dir_exists": true,
+  "n_train": 428,
+  "n_test": 107,
+  "n_features_before_screening": 65,
+  "n_features_after_screening": 65,
+  "screening_is_reduction": false,
+  "top_10_combined_features": [
+    "short",
+    "self",
+    "practice",
+    "path",
+    "human",
+    "shape",
+    "complexity",
+    "body",
+    "color",
+    "biomotion"
+  ],
+  "class_names": [
+    "Thing",
+    "Action",
+    "Property"
+  ],
+  "outputs_dir": "outputs/III/phase3_4_feature_screening"
+}
