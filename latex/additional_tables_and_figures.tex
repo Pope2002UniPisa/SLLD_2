@@ -3,6 +3,7 @@
 % \usepackage{subcaption}
 % \usepackage{booktabs}
 % \usepackage{float}
+% \usepackage{subfigure}
 % Paths assume that the folder `outputs/` is located in the same directory as the main .tex file.
 
 \section{Additional tables and figures}
@@ -53,35 +54,18 @@ Total & 535 & 68 & 3 & 65 & 0 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_1_supervised_data_loading_checks/class_distribution_train_test.png}
+\includegraphics[width=\textwidth]{class\_distribution\_train\_test.png}
 \caption{Class distribution.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_1_supervised_data_loading_checks/missing_values_by_split.png}
+\includegraphics[width=\textwidth]{missing\_values\_by\_split.png}
 \caption{Missing values by split.}
 \end{subfigure}
 \caption{Train--test structure and missing-value diagnostics for the supervised dataset.}
 \label{fig:app-data-checks-1}
 \end{figure}
 
-\begin{figure}[htbp]
-\centering
-\begin{subfigure}{0.48\textwidth}
-\centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_1_supervised_data_loading_checks/feature_missingness_top20.png}
-\caption{Feature-level missingness.}
-\end{subfigure}\hfill
-\begin{subfigure}{0.48\textwidth}
-\centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_1_supervised_data_loading_checks/duplicates_summary.png}
-\caption{Duplicate diagnostics.}
-\end{subfigure}
-\caption{Additional integrity checks for the supervised modelling dataset.}
-\label{fig:app-data-checks-2}
-\end{figure}
-
-\clearpage
 \subsection{PCA and unsupervised structure}
 \label{app:pca-unsupervised}
 
@@ -89,12 +73,12 @@ Total & 535 & 68 & 3 & 65 & 0 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/pca_scree_plot.png}
+\includegraphics[width=\textwidth]{pca\_scree\_plot.png}
 \caption{PCA scree plot.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/pca_cumulative_variance.png}
+\includegraphics[width=\textwidth]{pca\_cumulative\_variance.png}
 \caption{Cumulative explained variance.}
 \end{subfigure}
 \caption{PCA diagnostics used to assess the low-dimensional structure of the semantic feature space.}
@@ -103,7 +87,7 @@ Total & 535 & 68 & 3 & 65 & 0 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{outputs/II/phase2_unsupervised/pca_biplot_pc1_pc2.png}
+\includegraphics[width=0.25\textwidth]{pca\_biplot\_pc1\_pc2.png}
 \caption{PCA biplot on the first two principal components.}
 \label{fig:app-pca-biplot}
 \end{figure}
@@ -112,12 +96,12 @@ Total & 535 & 68 & 3 & 65 & 0 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/kmeans_silhouette_by_k.png}
+\includegraphics[width=\textwidth]{kmeans\_silhouette\_by\_k.png}
 \caption{K-Means silhouette profile.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/ahc_silhouette_by_k.png}
+\includegraphics[width=\textwidth]{ahc\_silhouette\_by\_k.png}
 \caption{AHC silhouette profile.}
 \end{subfigure}
 \caption{Silhouette-based diagnostics for the unsupervised clustering analyses.}
@@ -128,12 +112,12 @@ Total & 535 & 68 & 3 & 65 & 0 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/kmeans_clusters_pc12_k3.png}
+\includegraphics[width=\textwidth]{kmeans\_clusters\_pc12\_k3.png}
 \caption{K-Means, $k=3$.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/ahc_clusters_pc12_k3.png}
+\includegraphics[width=\textwidth]{ahc\_clusters\_pc12\_k3.png}
 \caption{AHC, $k=3$.}
 \end{subfigure}
 \caption{Cluster assignments projected on the first two principal components.}
@@ -144,12 +128,12 @@ Total & 535 & 68 & 3 & 65 & 0 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/cluster_vs_label_kmeans_k3.png}
+\includegraphics[width=\textwidth]{cluster\_vs\_label\_kmeans\_k3.png}
 \caption{K-Means clusters versus lexical labels.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/II/phase2_unsupervised/cluster_vs_label_ahc_k3.png}
+\includegraphics[width=\textwidth]{cluster\_vs\_label\_ahc\_k3.png}
 \caption{AHC clusters versus lexical labels.}
 \end{subfigure}
 \caption{Association between unsupervised clusters and the original lexical-semantic classes.}
@@ -178,12 +162,12 @@ Test & 0.953 & 0.919 & 0.868 & 0.919 & 0.890 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_2_train_test_baseline/baseline_confusion_matrix_test.png}
+\includegraphics[width=\textwidth]{baseline\_confusion\_matrix\_test.png}
 \caption{Absolute confusion matrix.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_2_train_test_baseline/baseline_confusion_matrix_test_normalized.png}
+\includegraphics[width=\textwidth]{baseline\_confusion\_matrix\_test\_normalized.png}
 \caption{Normalized confusion matrix.}
 \end{subfigure}
 \caption{Test-set confusion matrices for the baseline multinomial model.}
@@ -192,7 +176,7 @@ Test & 0.953 & 0.919 & 0.868 & 0.919 & 0.890 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{outputs/III/phase3_2_train_test_baseline/baseline_top_coefficients_by_class.png}
+\includegraphics[width=0.25\textwidth]{baseline\_top\_coefficients\_by\_class.png}
 \caption{Largest baseline coefficients by lexical-semantic class.}
 \label{fig:app-baseline-top-coefficients}
 \end{figure}
@@ -242,7 +226,7 @@ pattern & texture & 0.850 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{outputs/III/phase3_3_multicollinearity_analysis/correlation_heatmap_train.png}
+\includegraphics[width=0.25\textwidth]{correlation\_heatmap\_train.png}
 \caption{Absolute correlation structure among the 65 semantic features in the training set.}
 \label{fig:app-correlation-heatmap}
 \end{figure}
@@ -251,12 +235,12 @@ pattern & texture & 0.850 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_3_multicollinearity_analysis/top_correlation_pairs.png}
+\includegraphics[width=\textwidth]{top\_correlation\_pairs.png}
 \caption{Top absolute correlations.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_3_multicollinearity_analysis/top_vif_features.png}
+\includegraphics[width=\textwidth]{top\_vif\_features.png}
 \caption{Top VIF values.}
 \end{subfigure}
 \caption{Main pairwise and multivariate collinearity diagnostics.}
@@ -265,7 +249,7 @@ pattern & texture & 0.850 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{outputs/III/phase3_3_multicollinearity_analysis/feature_dendrogram.png}
+\includegraphics[width=0.25\textwidth]{feature\_dendrogram.png}
 \caption{Hierarchical clustering of features using distance $1-|r|$.}
 \label{fig:app-feature-dendrogram}
 \end{figure}
@@ -300,17 +284,17 @@ biomotion & 9 & 9 & 13 & 10 \\
 \centering
 \begin{subfigure}{0.32\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_4_feature_screening/anova_top_features.png}
+\includegraphics[width=\textwidth]{anova\_top\_features.png}
 \caption{ANOVA.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.32\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_4_feature_screening/mutual_information_top_features.png}
+\includegraphics[width=\textwidth]{mutual\_information\_top\_features.png}
 \caption{Mutual information.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.32\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_4_feature_screening/combined_screening_top_features.png}
+\includegraphics[width=\textwidth]{combined\_screening\_top\_features.png}
 \caption{Combined screening.}
 \end{subfigure}
 \caption{Top-ranked features under the univariate and combined screening criteria.}
@@ -319,7 +303,7 @@ biomotion & 9 & 9 & 13 & 10 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.70\textwidth]{outputs/III/phase3_4_feature_screening/screening_rank_correlation.png}
+\includegraphics[width=\textwidth]{screening\_rank\_correlation.png}
 \caption{Rank agreement among the feature-screening criteria.}
 \label{fig:app-screening-rank-correlation}
 \end{figure}
@@ -360,7 +344,7 @@ Elastic Net & 195 & 3 & 192 & 0.015 & 65 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.70\textwidth]{outputs/III/phase3_5_regularized_models/regularized_model_comparison.png}
+\includegraphics[width=0.25\textwidth]{regularized\_model\_comparison.png}
 \caption{Comparison of regularized multinomial models.}
 \label{fig:app-regularized-comparison}
 \end{figure}
@@ -369,12 +353,12 @@ Elastic Net & 195 & 3 & 192 & 0.015 & 65 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_5_regularized_models/lasso_confusion_matrix_test.png}
+\includegraphics[width=\textwidth]{lasso\_confusion\_matrix\_test.png}
 \caption{LASSO.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_5_regularized_models/elastic_net_confusion_matrix_test.png}
+\includegraphics[width=\textwidth]{elastic\_net\_confusion\_matrix\_test.png}
 \caption{Elastic Net.}
 \end{subfigure}
 \caption{Test-set confusion matrices for the regularized models.}
@@ -383,7 +367,7 @@ Elastic Net & 195 & 3 & 192 & 0.015 & 65 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.70\textwidth]{outputs/III/phase3_6_sparsity_analysis/sparsity_overview.png}
+\includegraphics[width=0.25\textwidth]{sparsity\_overview.png}
 \caption{Sparsity overview for the regularized multinomial coefficient matrices.}
 \label{fig:app-sparsity-overview}
 \end{figure}
@@ -392,12 +376,12 @@ Elastic Net & 195 & 3 & 192 & 0.015 & 65 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_6_sparsity_analysis/coefficient_heatmap_lasso.png}
+\includegraphics[width=\textwidth]{coefficient\_heatmap\_lasso.png}
 \caption{LASSO coefficients.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_6_sparsity_analysis/coefficient_heatmap_elastic_net.png}
+\includegraphics[width=\textwidth]{coefficient\_heatmap\_elastic\_net.png}
 \caption{Elastic Net coefficients.}
 \end{subfigure}
 \caption{Coefficient heatmaps for the regularized models.}
@@ -444,7 +428,7 @@ k-NN & 0.953 & 0.819 & 0.883 & 0.950 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{outputs/III/phase3_7_final_model_evaluation/final_model_comparison_accuracy_macro_f1.png}
+\includegraphics[width=0.25\textwidth]{final\_model\_comparison\_accuracy\_macro\_f1.png}
 \caption{Accuracy and macro-F1 comparison among the main supervised models.}
 \label{fig:app-final-model-comparison}
 \end{figure}
@@ -453,12 +437,12 @@ k-NN & 0.953 & 0.819 & 0.883 & 0.950 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_7_final_model_evaluation/final_model_confusion_matrix_test.png}
+\includegraphics[width=\textwidth]{final\_model\_confusion\_matrix\_test.png}
 \caption{Absolute confusion matrix.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_7_final_model_evaluation/final_model_confusion_matrix_test_normalized.png}
+\includegraphics[width=\textwidth]{final\_model\_confusion\_matrix\_test\_normalized.png}
 \caption{Normalized confusion matrix.}
 \end{subfigure}
 \caption{Test-set confusion matrices for the final selected model.}
@@ -467,7 +451,7 @@ k-NN & 0.953 & 0.819 & 0.883 & 0.950 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{outputs/III/phase3_7_final_model_evaluation/final_top_coefficients.png}
+\includegraphics[width=0.25\textwidth]{final\_top\_coefficients.png}
 \caption{Top coefficients of the final selected model.}
 \label{fig:app-final-top-coefficients}
 \end{figure}
@@ -476,12 +460,12 @@ k-NN & 0.953 & 0.819 & 0.883 & 0.950 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_extra_classifiers_comparison/alternative_classifiers_main_metrics_comparison.png}
+\includegraphics[width=\textwidth]{alternative\_classifiers\_main\_metrics\_comparison.png}
 \caption{Main metrics.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/III/phase3_extra_classifiers_comparison/alternative_classifiers_macro_f1_comparison.png}
+\includegraphics[width=\textwidth]{alternative\_classifiers\_macro\_f1\_comparison.png}
 \caption{Macro-F1.}
 \end{subfigure}
 \caption{Alternative classifier comparison on the selected semantic feature space.}
@@ -490,7 +474,7 @@ k-NN & 0.953 & 0.819 & 0.883 & 0.950 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.58\textwidth]{outputs/III/phase3_extra_classifiers_comparison/random_forest_confusion_matrix_test.png}
+\includegraphics[width=0.25\textwidth]{random\_forest\_confusion\_matrix\_test.png}
 \caption{Test-set confusion matrix for the Random Forest classifier, the best alternative classifier by macro-F1.}
 \label{fig:app-random-forest-confusion}
 \end{figure}
@@ -535,7 +519,7 @@ Post-selection Logistic & 53 & 0.981 & 0.974 & 0.979 & 0.981 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.70\textwidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3_target_distribution.png}
+\includegraphics[width=0.25\textwidth]{kmeans\_k3\_target\_distribution.png}
 \caption{Train--test distribution of the K-Means $k=3$ cluster target.}
 \label{fig:app-kmeans-k3-target-distribution}
 \end{figure}
@@ -544,12 +528,12 @@ Post-selection Logistic & 53 & 0.981 & 0.974 & 0.979 & 0.981 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3_vs_original_labels_train.png}
+\includegraphics[width=\textwidth]{kmeans\_k3\_vs\_original\_labels\_train.png}
 \caption{Train set.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3_vs_original_labels_test.png}
+\includegraphics[width=\textwidth]{kmeans\_k3\_vs\_original\_labels\_test.png}
 \caption{Test set.}
 \end{subfigure}
 \caption{Relationship between K-Means $k=3$ cluster assignments and original lexical labels.}
@@ -560,12 +544,12 @@ Post-selection Logistic & 53 & 0.981 & 0.974 & 0.979 & 0.981 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/target_model_comparison.png}
+\includegraphics[width=\textwidth]{target\_model\_comparison.png}
 \caption{Cluster-label models.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/best_original_vs_cluster_macro_f1.png}
+\includegraphics[width=\textwidth]{best\_original\_vs\_cluster\_macro\_f1.png}
 \caption{Original labels versus cluster labels.}
 \end{subfigure}
 \caption{Performance comparison for the cluster-label supervised analysis.}
@@ -576,12 +560,12 @@ Post-selection Logistic & 53 & 0.981 & 0.974 & 0.979 & 0.981 \\
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/baseline_confusion_matrix_test.png}
+\includegraphics[width=\textwidth]{baseline\_confusion\_matrix\_test.png}
 \caption{Absolute confusion matrix.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/baseline_confusion_matrix_test_normalized.png}
+\includegraphics[width=\textwidth]{baseline\_confusion\_matrix\_test\_normalized.png}
 \caption{Normalized confusion matrix.}
 \end{subfigure}
 \caption{Test-set confusion matrices for the best K-Means $k=3$ cluster-label classifier.}
@@ -590,7 +574,7 @@ Post-selection Logistic & 53 & 0.981 & 0.974 & 0.979 & 0.981 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/baseline_top_coefficients.png}
+\includegraphics[width=0.25\textwidth]{baseline\_top\_coefficients\_by\_class.png}
 \caption{Top coefficients for the best K-Means $k=3$ cluster-label classifier.}
 \label{fig:app-cluster-label-top-coefficients}
 \end{figure}
@@ -599,17 +583,17 @@ Post-selection Logistic & 53 & 0.981 & 0.974 & 0.979 & 0.981 \\
 \centering
 \begin{subfigure}{0.32\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/anova_top_features.png}
+\includegraphics[width=\textwidth]{anova\_top\_features.png}
 \caption{ANOVA.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.32\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/mutual_information_top_features.png}
+\includegraphics[width=\textwidth]{mutual\_information\_top\_features.png}
 \caption{Mutual information.}
 \end{subfigure}\hfill
 \begin{subfigure}{0.32\textwidth}
 \centering
-\includegraphics[width=\linewidth]{outputs/IV/phase4_cluster_label_supervised_analysis/kmeans_k3/screening_rank_scatter.png}
+\includegraphics[width=\textwidth]{screening\_rank\_scatter.png}
 \caption{Screening-rank scatter.}
 \end{subfigure}
 \caption{Feature-screening diagnostics for the K-Means $k=3$ cluster target.}

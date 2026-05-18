@@ -1,5 +1,6 @@
 \documentclass{ipgpmaster}
 
+\usepackage{subcaption}
 % Encoding and language
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -41,7 +42,7 @@
 \Entete
 
 \begin{abstract}
-This project reformulates the semantic rating dataset of Binder et al.\cite{binder2016toward} as a multi-class statistical learning problem. English lexical items are represented through 65 experiential semantic attributes and classified into three lexical-semantic classes: \emph{Thing}, \emph{Action}, and \emph{Property}. After preprocessing, imputation, marginal distribution analysis, and standardization, the data are first explored through PCA and clustering to assess whether the semantic feature space contains interpretable structure and whether natural groups correspond to the known labels. The supervised analysis then uses multinomial generalized linear models as a baseline and investigates the effects of multicollinearity, feature screening, and regularization. In the high-dimensional setting, obtained by expanding the predictors with quadratic terms and pairwise interactions, marginal screening is used to reduce the feature space before fitting LASSO and Elastic Net models. Performance is evaluated through accuracy, balanced accuracy, macro-F1, class-wise recall, and confusion matrices, while sparsity patterns are inspected to identify the semantic predictors most relevant for lexical-class discrimination. The project ultimately assesses whether high-dimensional statistical learning can improve classification while preserving semantic interpretability.
+This project reformulates the semantic rating dataset of Binder et al.~\cite{binder2016toward} as a supervised multi-class learning problem. English lexical items, described by 65 experiential semantic attributes, are classified into three lexical-semantic classes: \emph{Thing}, \emph{Action}, and \emph{Property}. After data cleaning, imputation, standardization, and exploratory analysis, the original feature space is used to fit baseline multinomial models and regularized alternatives, with attention to class imbalance, multicollinearity, and interpretability. The analysis is then extended to a high-dimensional representation obtained through quadratic terms and pairwise interactions. Feature screening, LASSO, and Elastic Net are used to control dimensionality, reduce overfitting, and identify relevant semantic predictors. Model performance is assessed through accuracy, balanced accuracy, macro-F1, class-wise recall, and confusion matrices. The project evaluates whether high-dimensional statistical learning can improve lexical-class prediction while preserving a meaningful semantic interpretation of the selected features.
 \end{abstract}
 
 \vfill
@@ -57,124 +58,120 @@ This report was prepared for the Statistical Learning for Large Data exam. The w
 
 \section{Introduction}
 
-The present work builds on the previous project \emph{\textbf{\textit{Unveiling Word Meaning: A statistical study on primitive semantic features}}}, developed by Davide Testa. Testa's work was concerned with the statistical analysis of semantic representations derived from the dataset introduced by Binder et al.\cite{binder2016toward}. In the original project, Testa approached the dataset from the perspective of lexical semantics, psycholinguistics, and neurocognitive theories of meaning representation. His main objective was to assess whether a componential, brain-inspired representation of word meaning could capture meaningful semantic structures and support the distinction between broad lexical classes. Testa is publicly listed as a PhD Student in Artificial Intelligence at Sapienza Università di Roma in collaboration with Fondazione Bruno Kessler (FBK)\cite{testaLinkedin}.
-The dataset used in the original project consists of English lexical items represented through a set of primitive semantic attributes. After removing duplicates and reducing the data to the variables relevant to the semantic analysis, Testa worked with 534 lexical units and 65 semantic features, plus a qualitative target variable indicating the lexical-semantic type of each item. The target was organized into three main classes: \emph{Things}, corresponding to nouns; \emph{Actions}, corresponding to verbs; and \emph{Properties}, corresponding to adjectives. The resulting class distribution was highly unbalanced, with 434 items classified as Things, 56 as Actions, and 44 as Properties. This imbalance already represented an important statistical issue, since classification accuracy alone could be strongly influenced by the majority class.
-The original analysis was structured around two main research questions. The first asked whether similarity structures could be identified from the semantic information encoded in the 65 primitive features. The second asked whether morpho-syntactic classes could be distinguished solely on the basis of semantic information. To address these questions, Testa developed a pipeline including data preprocessing, unsupervised learning, dimensionality reduction, supervised classification, and feature selection.
-In the preprocessing stage, missing values were identified and imputed using the mean of the corresponding feature. Since several variables showed a right-skewed distribution and the presence of outliers, a logarithmic transformation was applied to reduce skewness and make the data more suitable for subsequent statistical analysis. The features were then normalized so that variables measured on different scales or ranges would contribute more evenly to distance-based and model-based procedures. A preliminary correlation analysis showed substantial multicollinearity among several semantic dimensions. In particular, Testa identified groups of highly correlated features related to visual and somatosensory attributes, auditory attributes, temporal and causal attributes, and social-emotional attributes. Rather than eliminating or merging correlated features, the original project kept them as separate predictors, because one of its goals was precisely to evaluate the contribution of individual primitive semantic dimensions to word meaning.
-The unsupervised part of the project investigated whether the semantic feature space contained interpretable similarity structures. Testa applied k-means clustering, agglomerative hierarchical clustering, and biclustering. The k-means analysis produced only partially satisfactory results: with two clusters, the distinction was too coarse and difficult to interpret, while with ten clusters some semantic groupings emerged but remained noisy. Hierarchical clustering led to qualitatively more interpretable groupings, including categories such as food, animals, musical instruments, and sentiment-related words. Biclustering was introduced as a more flexible method, since it simultaneously groups rows and columns and can therefore identify local semantic patterns involving subsets of words and subsets of features. This analysis produced a large number of semantic biclusters, including groups interpretable as Time, Food and Drinks, Animals, Sounds, Human Beings, Practical Tools, Locations, and Negative Events and Feelings.
-Principal Component Analysis was then used as a dimensionality reduction and denoising strategy. In Testa's interpretation, PCA helped reveal latent semantic dimensions underlying the original feature space. The first ten principal components accounted for approximately 75\% of the total variance, while the first two components accounted for about 36\%. These first two dimensions were interpreted as a broad opposition between \emph{Concreteness} and \emph{Abstractness}. When clustering was performed on the PCA-reduced representation, the results became clearer than those obtained in the original feature space, suggesting that PCA could reduce noise and highlight more stable semantic structures.
-The supervised part of the original project addressed the classification of lexical-semantic classes. Testa used multinomial logistic regression with a LASSO penalty, implemented through the \texttt{glmnet} framework, to predict whether each lexical item belonged to the class \emph{Thing}, \emph{Action}, or \emph{Property}. Initial models were trained on the 65 original semantic features and on PCA-reduced representations. The LASSO model using all 65 features achieved an accuracy around 0.84, while models based on two or ten principal components achieved slightly lower accuracies. Since the classes were strongly unbalanced, several strategies were explored, including oversampling, cross-validation with the selection of an optimal regularization parameter, stratified cross-validation, and alternative train-test partitions. Some configurations produced very high accuracies, but Testa noted that these results could be affected by overfitting or by the instability induced by the class imbalance. In the final feature selection step, the LASSO coefficients were used to identify a reduced set of relevant predictors. A model fitted on 32 selected features out of the original 65 achieved an accuracy around 0.91.
-Overall, Testa concluded that the componential semantic representation proposed by Binder et al. captures a considerable amount of semantic and relational information. His results suggested that the 65 primitive semantic features are informative both for identifying broad semantic similarity structures and for distinguishing among lexical classes. The PCA analysis was interpreted as especially relevant, because it appeared to reveal a latent concrete/abstract opposition that may play an important role in the organization of word meaning. At the same time, the original project remained mainly exploratory: it focused on validating the usefulness of the semantic features, rather than systematically studying the statistical consequences of high dimensionality, multicollinearity, class imbalance, and model instability.
-The present project resumes the analysis from this point and reformulates it within the framework of statistical learning for high-dimensional semantic data. Rather than treating the Binder representation only as an object of exploratory semantic analysis, we organize the work around a structured pipeline that combines preprocessing, unsupervised exploration, supervised classification, multicollinearity diagnostics, feature screening, regularization, and final model comparison. The goal is therefore not simply to verify whether the 65 primitive semantic attributes are informative, but to assess how different statistical learning strategies behave when lexical-semantic classification is affected by redundancy among predictors, class imbalance, and the possible expansion of the feature space.
-The first part of the project focuses on data preparation and exploratory analysis. Missing values are inspected and handled through a coherent imputation strategy, while the marginal distributions of the semantic variables are examined in order to detect skewness, low-variance predictors, and possible outlying patterns. The resulting feature matrix is then standardized when required, especially before applying PCA, clustering, and regularized models. The unsupervised analysis uses Principal Component Analysis to study the main directions of variation in the semantic space and clustering methods to evaluate whether the observations form natural groups. These clusters are compared with the three known lexical-semantic labels in order to understand whether the geometry of the semantic feature space reflects, at least partially, the distinction between \emph{Thing}, \emph{Action}, and \emph{Property}.
-The supervised part of the project frames the task as a multi-class classification problem and uses multinomial generalized linear models as the main statistical reference. A simple baseline model is first constructed to establish a point of comparison. The analysis then explicitly addresses multicollinearity among the semantic predictors through correlation analysis, variance inflation diagnostics, partial association measures, and dendrogram-based inspection of redundant feature groups. When the predictor space is expanded through quadratic terms and pairwise interactions, the problem becomes high-dimensional, with \(p > n\). For this reason, marginal feature screening is introduced as an intermediate step to reduce the number of predictors before fitting regularized multinomial models.
-Finally, the project compares LASSO and Elastic Net as regularized classification strategies. LASSO is used to obtain sparse models and identify the most informative semantic predictors, while Elastic Net is used to combine sparsity with greater robustness in the presence of correlated variables. Model performance is evaluated using accuracy, balanced accuracy, macro-F1, class-wise recall, and confusion matrices, so that the strong imbalance among the lexical-semantic classes does not make raw accuracy the only criterion of evaluation. Particular attention is given to the sparsity patterns produced by the models: the analysis examines how many coefficients are set to zero, which semantic features or expanded terms are retained, and whether the selected predictors offer an interpretable account of the distinction between lexical classes. In this way, the project extends Testa's original semantic analysis into a statistical learning study focused on preprocessing, unsupervised structure, multinomial classification, multicollinearity, screening, regularization, sparsity, and interpretability in semantic data.
+The present work builds on the previous project \emph{\textbf{\textit{Unveiling Word Meaning: A statistical study on primitive semantic features}}}, developed by Davide Testa\cite{testaLinkedin}.. Testa's work was concerned with the statistical analysis of semantic representations derived from the dataset introduced by Binder et al.\cite{binder2016toward}. In the original project, Testa approached the dataset from the perspective of lexical semantics, psycholinguistics, and neurocognitive theories of meaning representation. His main objective was to assess whether a componential, brain-inspired representation of word meaning could capture meaningful semantic structures and support the distinction between broad lexical classes. Testa's original analysis combined unsupervised and supervised methods. The unsupervised part used correlation analysis, k-means clustering, hierarchical clustering, biclustering\cite{csardi2023isa2}, and PCA to examine whether semantic similarity structures could emerge from the feature space alone. These analyses suggested that the semantic attributes were not randomly distributed, but organized into interpretable domains, with PCA highlighting a relevant opposition between more concrete and more abstract semantic dimensions. The supervised part addressed whether lexical classes could be predicted from semantic information alone, using multinomial regression with LASSO regularization and feature selection. Overall, Testa's work showed that primitive semantic features carry enough information both to recover meaningful semantic groupings and to support the distinction between broad lexical classes. Our project takes this original analysis as a methodological and conceptual starting point, but shifts the focus toward supervised high-dimensional statistical learning, regularization, feature screening, and predictive evaluation.
 
 \section{Dataset}
 \label{sec:dataset}
+The starting point of this project is the dataset used in Testa's original work, his study was based on the semantic ratings introduced by Binder et al.~\cite{binder2016toward} and used them to investigate whether a brain-based componential representation of meaning could reveal interpretable semantic structures and support the distinction between broad lexical classes. In that framework, lexical items are represented through primitive experiential attributes: each feature measures the relevance of a specific semantic component to the meaning of a word. These components span several domains of experience, including sensory, motor, spatial, temporal, causal, social, affective, drive-related, attentional and cognitive dimensions. In the final version used by Testa, the dataset was reduced to the variables directly relevant to the semantic analysis. After removing duplicated units and excluding auxiliary variables not needed for the componential study, the data consisted of \(534\) English lexical items and \(66\) variables: \(65\) quantitative semantic features plus one qualitative variable, \texttt{Type}. The variable \texttt{Type} assigns each lexical item to one of three lexical-semantic classes: \emph{Thing}, \emph{Action}, and \emph{Property}. These classes correspond, respectively, to nouns, verbs, and adjectives or property-like items. The class distribution is strongly unbalanced, as shown in Table~\ref{tab:dataset-class-distribution}.
 
-The dataset used in this project is derived from the semantic ratings introduced by Binder et al.\cite{binder2016toward} in the paper \emph{Toward a Brain-Based Componential Semantic Representation}. The aim of that work was to provide a componential representation of word meaning in which lexical concepts are described through a set of experiential semantic dimensions. Unlike distributional semantic models, where words are represented on the basis of their textual co-occurrence patterns, this dataset represents each lexical item through human ratings on theoretically motivated semantic attributes. These attributes are intended to capture the extent to which a word meaning involves perceptual, motor, spatial, temporal, social, affective, attentional and cognitive experience.
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Class} & \textbf{Number of items} & \textbf{Percentage} \\
+\hline
+\emph{Thing} & 434 & 81.27\% \\
+\emph{Action} & 56 & 10.49\% \\
+\emph{Property} & 44 & 8.24\% \\
+\hline
+\textbf{Total} & \textbf{534} & \textbf{100.00\%} \\
+\hline
+\end{tabular}
+\caption{Class distribution of the lexical-semantic target variable.}
+\label{tab:dataset-class-distribution}
+\end{table}
 
-The dataset contains approximately 535 English lexical entries, each described by 65 semantic attributes. Each row corresponds to a word or word-sense, while each of the 65 core columns corresponds to a semantic dimension. The values are continuous ratings, interpreted as the average degree to which a specific attribute contributes to the meaning of the word. A high value indicates that the corresponding experiential dimension is strongly involved in the concept, whereas a low value indicates that the dimension is weakly involved or not relevant. For example, a word such as \emph{yellow} is expected to receive high ratings on visual dimensions such as \emph{Vision}, \emph{Color} and \emph{Bright}, while a word such as \emph{agreement} is expected to be more strongly associated with dimensions such as \emph{Social}, \emph{Communication} and \emph{Cognition}. Similarly, an action-related word may show high values on dimensions such as \emph{Motion}, \emph{Body}, \emph{UpperLimb}, \emph{LowerLimb} or \emph{Practice}.
-The expression ``Binder et al. 2016'' therefore refers specifically to the semantic rating dataset associated with the paper by Binder and colleagues. Although the representation is described as brain-based because the semantic dimensions are motivated by neurocognitive theories of conceptual representation, the numerical values used in the dataset are not direct neuroimaging measurements. They are behavioral semantic ratings collected from human participants and organized into a structured word-by-feature matrix. In this sense, the dataset provides a bridge between cognitive theories of meaning and statistical learning, since it translates qualitative semantic properties into quantitative predictors.
-The 65 semantic attributes cover a broad range of experiential domains. They include visual features such as \emph{Vision}, \emph{Color}, \emph{Shape}, \emph{Bright}, \emph{Dark}, \emph{Pattern}, \emph{Large} and \emph{Small}; auditory features such as \emph{Audition}, \emph{Sound}, \emph{Music}, \emph{Speech}, \emph{Loud}, \emph{Low} and \emph{High}; somatic and motor features such as \emph{Touch}, \emph{Temperature}, \emph{Texture}, \emph{Weight}, \emph{Pain}, \emph{Head}, \emph{UpperLimb}, \emph{LowerLimb} and \emph{Practice}; spatial and temporal features such as \emph{Landmark}, \emph{Path}, \emph{Scene}, \emph{Near}, \emph{Toward}, \emph{Away}, \emph{Time}, \emph{Duration}, \emph{Long} and \emph{Short}; and more abstract dimensions such as \emph{Caused}, \emph{Consequential}, \emph{Social}, \emph{Human}, \emph{Communication}, \emph{Self}, \emph{Cognition}, \emph{Benefit}, \emph{Harm}, \emph{Pleasant}, \emph{Unpleasant}, \emph{Happy}, \emph{Sad}, \emph{Angry}, \emph{Disgusted}, \emph{Fearful}, \emph{Surprised}, \emph{Drive}, \emph{Needs}, \emph{Attention} and \emph{Arousal}. This organization makes the dataset particularly suitable for studying whether broad lexical classes can be predicted from structured semantic information.
+This distribution is an important numerical property of the dataset. The majority class, \emph{Thing}, represents more than four fifths of the observations. The imbalance ratio between the largest and smallest class is
 
-In addition to the semantic attributes, the original data file contains auxiliary lexical and categorical variables, such as word identifiers, word class codes, frequency-related variables and category labels. However, in this project we use only the 65 semantic attributes as predictors. Lexical variables such as word length, frequency or imageability are excluded from the main predictive models, because the objective is to evaluate the statistical information contained in the semantic representation itself. The response variable is defined as a lexical-semantic class, with three target categories: \emph{Thing}, \emph{Action} and \emph{Property}. This follows the structure already adopted in the previous \emph{Unveiling Word Meaning: A statistical study on primitive semantic features} project, where nouns were associated with things, verbs with actions, and adjectives or property-like items with properties.
+\[
+\frac{434}{44} \approx 9.86,
+\]
 
-A relevant characteristic of the dataset is the strong imbalance among classes. The majority of the observations belong to the class \emph{Thing}, while \emph{Action} and \emph{Property} are much less represented. This imbalance has important consequences for model evaluation. A classifier may obtain a high raw accuracy by systematically favoring the majority class, while performing poorly on the minority classes. For this reason, accuracy alone is not sufficient to assess the quality of the models. In the following analyses, performance will therefore be evaluated using metrics that are more appropriate for imbalanced classification, including balanced accuracy, macro-F1, class-wise recall and confusion matrices.
+while the ratio between \emph{Thing} and \emph{Action} is
 
-The dataset also contains a limited number of missing values. These missing values are not necessarily random errors, since some semantic attributes were not equally meaningful or available for all grammatical classes. In the present project, missing values are handled through imputation. To avoid data leakage, the imputation parameters are estimated only on the training set and then applied to the test set. The same principle is followed for standardization: means and standard deviations are computed from the training data only, and the resulting transformation is then applied to both training and test observations.
+\[
+\frac{434}{56} \approx 7.75.
+\]
 
-The original semantic representation has 65 predictors and can be considered a moderate-dimensional dataset. However, one of the objectives of this project is to reformulate it as a high-dimensional statistical learning problem. To this end, we construct an expanded feature space starting from the original semantic matrix. Let
+As a consequence, a trivial classifier always predicting \emph{Thing} would already obtain a raw accuracy of
+
+\[
+\frac{434}{534} \approx 81.27\%.
+\]
+
+However, the same classifier would have zero recall for both \emph{Action} and \emph{Property}. For this reason, the dataset cannot be evaluated using accuracy alone. The class imbalance directly motivates the use of balanced accuracy, macro-F1, class-wise recall and confusion matrices in the supervised evaluation.In its original form, the dataset is moderate-dimensional. The number of predictors is
+
+\[
+p_{\text{orig}} = 65,
+\]
+
+with
+
+\[
+\frac{p_{\text{orig}}}{n} = \frac{65}{534} \approx 0.12,
+\qquad
+\frac{n}{p_{\text{orig}}} = \frac{534}{65} \approx 8.22.
+\]
+Thus, before feature expansion, the number of observations is substantially larger than the number of semantic predictors. This original matrix is used to fit baseline models and regularized models on the native semantic representation. Our project takes the same semantic matrix as a starting point but reformulates it as a supervised statistical learning problem. The original \(534 \times 65\) representation is first used to build baseline and regularized models on the native semantic feature space. The analysis is then extended by transforming the original predictors into a high-dimensional feature space containing the original variables, their quadratic terms and all pairwise interactions.
+Formally, if
+
 \[
 X = (X_1, X_2, \ldots, X_{65})
 \]
-denote the original vector of semantic attributes for a given word. The expanded representation includes the original features, the quadratic terms
+
+denotes the original vector of semantic attributes, the expanded representation includes
+
 \[
-X_1^2, X_2^2, \ldots, X_{65}^2,
+X_1,\ldots,X_{65},
 \]
-and all pairwise interaction terms
+
 \[
-X_j X_k, \qquad j < k.
+X_1^2,\ldots,X_{65}^2,
 \]
-The resulting number of predictors is
+
+and all interaction terms
+
 \[
-65 + 65 + \binom{65}{2}
-=
-65 + 65 + 2080
-=
-2210.
+X_jX_k, \qquad j<k.
 \]
-This expansion allows the models to capture not only the individual contribution of each semantic dimension, but also possible non-linear effects and interactions between semantic attributes. For instance, an interaction such as \emph{Vision}~$\times$~\emph{Color} may capture a specifically visual-perceptual profile, while \emph{Motion}~$\times$~\emph{Body} may be relevant for action-related words, and \emph{Social}~$\times$~\emph{Emotion} may characterize more abstract or interpersonal meanings.
 
-After feature expansion, the problem becomes high-dimensional, since the number of predictors exceeds the number of observations:
+The number of pairwise interactions is
+
 \[
-p = 2210 > n.
+\binom{65}{2} = 2080,
 \]
-This setting is statistically challenging. The original 65 semantic features already contain natural correlations, because related experiential dimensions tend to co-occur in word meanings. For example, visual dimensions may be correlated with each other, social and emotional dimensions may overlap, and motor dimensions may jointly characterize action concepts. The addition of squared terms and pairwise interactions further increases redundancy and multicollinearity. As a result, ordinary unregularized multinomial regression is expected to be unstable or infeasible, and the risk of overfitting becomes substantial.
 
-For this reason, the dataset is well suited to the methodological aims of the project. The original 65-feature representation allows us to build baseline models and evaluate whether semantic attributes alone are informative for lexical classification. The expanded 2210-feature representation allows us to study a genuine large-feature-space problem, where regularization, dimension reduction, feature screening, rebalancing and stability analysis become necessary. In particular, the project will compare models fitted on the original semantic matrix with high-dimensional penalized models, PCA-based dimensionality reduction, and a two-stage strategy based on marginal feature screening followed by penalized multinomial regression.
+so the transformed feature space contains
 
-To summarize, the Binder et al. dataset provides a structured and cognitively motivated representation of word meaning. In its original form, it is a semantic rating dataset composed of English lexical items and 65 experiential attributes. In the present work, it is used as the basis for a high-dimensional statistical learning problem. By expanding the semantic feature space and studying the resulting classification task under multicollinearity and class imbalance, the project aims to identify which semantic dimensions and interactions contribute most reliably to the prediction of lexical-semantic classes.
+\[
+65 + 65 + 2080 = 2210
+\]
 
-\section{Methods}
-\label{sec:methods}
-All analyses are implemented in Python, using a modular pipeline organized into successive phases. Each phase produces intermediate datasets, diagnostic files, and summary reports, so that the whole workflow remains reproducible and inspectable. The methodological structure follows a progressive logic: we first prepare the data, then explore the semantic space without using the labels, and finally formulate the supervised classification problem, moving from simple baseline models to regularized and high-dimensional approaches.
-% \todo{
-% \subsection{Phase 1: Data preprocessing}
-% The first phase is devoted to the construction of a clean and statistically usable feature matrix. We start from the prepared Binder semantic rating dataset, where each lexical item is represented by 65 experiential semantic attributes and associated with one of three lexical-semantic classes: \emph{Thing}, \emph{Action}, or \emph{Property}. Since the subsequent analyses depend strongly on the quality and comparability of the input variables, preprocessing is treated as a separate methodological stage rather than as a minor technical operation.
-% In the initial cleaning step, we verify the structural integrity of the dataset. We check that the identifying columns, the lexical item, and the target variable are correctly represented, and we detect exact duplicate rows. Exact duplicates are removed if present, because they do not add independent information. Duplicated word forms, however, are not automatically discarded: the statistical unit of the analysis is the lexical entry, not the orthographic word form alone. Therefore, if the same word appears with different lexical-semantic roles, it is retained as a valid observation. We also inspect the distribution of the target classes in order to quantify class imbalance before any modelling step.
-% We then examine missing values feature by feature. Rather than deleting observations aggressively, we preserve the dataset whenever possible, because the number of lexical items is limited and the target classes are unbalanced. Missingness is therefore handled through imputation in a later step. The imputation strategy is fitted only on the training set and then applied to both training and test data. This prevents information from the test set from influencing the preprocessing parameters and avoids data leakage.
-% After imputation, we standardize the semantic features when required. Standardization is essential for PCA, clustering, distance-based methods, and regularized models, because these procedures are sensitive to the scale of the predictors. We fit the scaler only on the training set and apply the resulting transformation to the test set. In this way, the test data remain genuinely external to all fitted preprocessing operations.
-% Finally, we inspect the marginal distributions of the semantic variables. We compute descriptive statistics and identify variables with strong asymmetry, low variance, or possible outlying patterns. Since the predictors are semantic ratings rather than physical measurements, nonlinear transformations such as logarithmic transformations are considered cautiously and only when they are substantively and statistically justified. The main objective of this step is to understand the empirical behavior of the features before applying dimensionality reduction or classification models.
-% \subsection{Phase 2: Unsupervised exploration of the semantic space}
-% The second phase investigates the internal geometry of the semantic feature space without using the target labels for model fitting. The aim is to understand whether the 65 experiential attributes contain visible structure and whether this structure is related to the lexical-semantic distinction between \emph{Thing}, \emph{Action}, and \emph{Property}.
-% We first apply Principal Component Analysis to the standardized feature matrix. PCA allows us to identify the main directions of variation among the semantic attributes and to represent the lexical items in a lower-dimensional space. We examine the proportion of variance explained by each principal component, the cumulative explained variance, and the loadings of the original features on the first components. The scores on the first principal components are visualized by coloring observations according to their known class labels. This does not make PCA a supervised method, but it allows us to evaluate whether the unsupervised axes of semantic variation partially separate the lexical-semantic classes.
-% We then perform clustering on the observations. In particular, we consider clustering methods such as k-means and hierarchical clustering in order to test whether natural groups emerge from the semantic ratings. Since the known target has three classes, we first examine solutions with three clusters, but we also consider different numbers of clusters to evaluate whether the semantic structure of the data is more complex than the target classification. The resulting clusters are compared with the known labels through contingency tables and external agreement measures. This comparison allows us to determine whether the classes correspond to compact regions of the semantic space or whether they overlap substantially.
-% The interpretation of clusters is based on the semantic profiles of the groups. For each cluster, we examine the average values of the semantic features and identify the attributes that most distinguish one cluster from the others. This step is exploratory: the objective is not to force clusters to reproduce the target classes, but to understand whether the semantic representation contains interpretable similarity structures that can support the later supervised analysis.
-% \subsection{Phase 3: Supervised classification on the original feature space}
-% The third phase formulates the main prediction task. We treat lexical-semantic classification as a multi-class supervised learning problem, where the response variable has three possible classes: \emph{Thing}, \emph{Action}, and \emph{Property}. The initial supervised models are fitted using the 65 original semantic features.
-% We first construct a baseline classifier. This model provides a minimal reference point against which all subsequent models must be compared. Because the dataset is class-imbalanced, a naive classifier that always predicts the majority class can obtain deceptively high accuracy. For this reason, accuracy alone is not sufficient. We therefore evaluate all models using balanced accuracy, macro-F1, class-wise precision, class-wise recall, and confusion matrices. These metrics are more appropriate for assessing whether the model learns to recognize minority classes rather than simply exploiting the dominance of the majority class.
-% After the baseline, we fit a multinomial generalized linear model. This model is the natural extension of logistic regression to a multi-class response and serves as the main interpretable statistical reference. It allows us to model the conditional probability of each lexical-semantic class as a function of the semantic predictors. The model is evaluated on held-out test data, using the same metrics adopted for the baseline.
-% We then analyze multicollinearity among the 65 semantic features. Since semantic attributes are not expected to be independent, several predictors may encode overlapping information. We therefore compute correlation matrices, inspect highly correlated feature pairs, calculate variance inflation diagnostics when appropriate, and build dendrograms of the variables. This step is important because strong dependencies among predictors can make coefficient estimates unstable, reduce interpretability, and affect feature selection procedures.
-% To address these issues, we fit regularized multinomial models. Ridge regularization is used to stabilize the estimates in the presence of correlated predictors. LASSO regularization is used to induce sparsity, setting some coefficients to zero and therefore selecting a subset of informative semantic features. Elastic Net combines the two approaches: it encourages sparse solutions while retaining some of the stabilizing effect of Ridge. This is especially useful when groups of semantic variables are correlated and purely sparse selection may become unstable.
-% The coefficients of the regularized models are then analyzed to study sparsity. We count the number of non-zero coefficients, identify which semantic features are retained by the model, and examine whether different classes rely on different semantic dimensions. This phase links prediction and interpretation: a model is not considered useful only because it improves performance, but also because it can identify meaningful semantic predictors of lexical class.
-% \subsection{Phase 4: High-dimensional expansion and feature screening}
-% The fourth phase extends the analysis from the original 65-dimensional representation to a larger feature space. We construct an expanded predictor matrix by including the original semantic features, their quadratic terms, and all pairwise interactions. This produces a high-dimensional setting in which the number of predictors exceeds the number of observations. The motivation for this expansion is that lexical-semantic class membership may not depend only on the linear contribution of single semantic attributes, but also on nonlinear effects and interactions between semantic dimensions.
-% However, the expanded representation also introduces substantial statistical challenges. The number of predictors increases sharply, multicollinearity becomes more severe, and the risk of overfitting grows. Directly fitting flexible models on the full expanded matrix may therefore lead to unstable or poorly generalizable results. For this reason, we introduce feature screening as an intermediate step.
-% The screening procedure ranks predictors according to their marginal association with the target. We use this step to reduce the expanded feature space to a more manageable subset before fitting regularized multinomial models. The screening stage is deliberately conservative: its purpose is not to identify the final model by itself, but to remove clearly uninformative predictors while retaining a sufficiently rich set of candidate variables for the subsequent penalized models.
-% After screening, we fit LASSO and Elastic Net models on the reduced high-dimensional feature set. We compare different screening thresholds and evaluate whether the expanded representation improves classification performance over the original 65-feature models. We also inspect the selected terms to distinguish original features, quadratic terms, and interaction terms. This allows us to assess whether the high-dimensional expansion provides interpretable semantic information or mainly introduces noise and instability.
+predictors. The dataset is therefore transformed from an original matrix
 
-% \subsection{Phase 5: Alternative classifiers}
+\[
+X_{\text{orig}} \in \mathbb{R}^{534 \times 65}
+\]
 
-% As an extension, we compare the regularized multinomial models with alternative supervised classifiers. These may include Support Vector Machines, k-Nearest Neighbors, Random Forests, and a small neural network. The purpose of this phase is not to replace the main statistical modelling framework, but to evaluate whether nonlinear or distance-based classifiers capture patterns that linear and regularized models miss.
-% All alternative classifiers are evaluated using the same train/test split and the same performance metrics. This ensures that model comparison is fair and not driven by differences in preprocessing, sampling, or evaluation criteria. Because the dataset is relatively small, especially for the minority classes, we interpret highly flexible models cautiously and pay particular attention to overfitting.
+into a high-dimensional matrix
 
-% \subsection{Phase 6: Final model comparison and interpretation}
+\[
+X_{\text{HD}} \in \mathbb{R}^{534 \times 2210}.
+\]
 
-% The final phase integrates the results of the previous analyses. We compare the baseline model, the multinomial model on the original features, the regularized models, the screened high-dimensional models, and the alternative classifiers. The comparison is based not only on global accuracy, but also on balanced accuracy, macro-F1, class-wise recall, and confusion matrices. This is necessary because the class imbalance makes raw accuracy an incomplete measure of performance.
-% We then identify the models that offer the best compromise between predictive performance, stability, and interpretability. In particular, we examine whether regularization improves generalization, whether feature screening is beneficial in the expanded feature space, and whether the selected semantic predictors are coherent with the distinction between \emph{Thing}, \emph{Action}, and \emph{Property}. The final objective is therefore twofold: to evaluate the predictive value of the Binder semantic representation and to determine which statistical learning strategies are most appropriate for extracting stable and interpretable information from high-dimensional semantic data.}
+This transformation changes the statistical nature of the problem. In the original feature space, the number of observations is larger than the number of predictors. After expansion, instead, the number of predictors exceeds the number of lexical items:
+
+\[
+p = 2210 > n = 534.
+\]
+
+The project therefore moves from a moderate-dimensional semantic classification problem to a high-dimensional learning setting. This makes ordinary unregularized multinomial regression unsuitable and motivates the use of regularization, dimensionality reduction and feature screening. At the same time, the expanded representation remains semantically interpretable: quadratic terms capture nonlinear effects of individual semantic dimensions, while interaction terms capture combined semantic profiles, such as the joint contribution of motion and body-related features for actions or social and cognitive features for abstract meanings.
+
 \subsection{I. Data Preprocessing}
-The preprocessing phase is designed to produce a clean, reproducible, and statistically usable version of the Binder semantic rating dataset before any exploratory or predictive analysis is performed. All operations are implemented in Python and organized into three consecutive steps, corresponding to the outputs stored in folder \texttt{I}: initial dataset cleaning, stratified train--test splitting, and train-based imputation and standardization. The guiding principle of this phase is to preserve as much valid lexical information as possible while avoiding data leakage between training and test data.
-We start from the 65-feature version of the dataset, in which each observation corresponds to a lexical entry and each predictor corresponds to an experiential semantic attribute. The dataset contains three structural columns, namely \texttt{entry\_id}, \texttt{word}, and \texttt{target\_word\_class}, plus 65 semantic features. The target variable is represented by three lexical-semantic classes: \emph{noun}, \emph{verb}, and \emph{adjective}, corresponding respectively to the conceptual categories \emph{Thing}, \emph{Action}, and \emph{Property}. In the first preprocessing script, we verify that all required columns are present, that the expected number of semantic predictors is equal to 65, and that the target variable contains only valid class labels.
-During the initial cleaning step, we do not apply any statistical transformation to the predictors. We only perform structural checks. Exact duplicated rows are searched for and removed if present, because exact duplicates would artificially increase the weight of repeated observations without adding information. In the present dataset, no exact duplicate rows are found. We also inspect duplicated word forms. This check identifies two rows corresponding to the word \emph{used}, which appears once as an adjective and once as a verb. These rows are not removed, because the statistical unit of the analysis is the lexical entry rather than the orthographic word form alone. A repeated word form with a different lexical-semantic class is therefore considered a valid observation.
-The initial class distribution, reported in Table~\ref{tab:class_distribution_preprocessing}, confirms that the dataset is strongly imbalanced. Out of 535 lexical entries, 434 are nouns, 62 are verbs, and 39 are adjectives. This means that the majority class alone accounts for approximately 81.1\% of the dataset. This imbalance is important methodologically, because a naive classifier predicting only the majority class would already obtain high raw accuracy. For this reason, in the later supervised analyses, accuracy must be complemented by balanced accuracy, macro-F1, class-wise recall, and confusion matrices.
-\begin{table}[H]
-\centering
-\begin{tabular}{lrr}
-\toprule
-\textbf{Class} & \textbf{Count} & \textbf{Percentage} \\
-\midrule
-noun & 434 & 81.12\% \\
-verb & 62 & 11.59\% \\
-adjective & 39 & 7.29\% \\
-\bottomrule
-\end{tabular}
-\caption{Class distribution in the cleaned dataset before train--test splitting.}
-\label{tab:class_distribution_preprocessing}
-\end{table}
-
-We then examine missing values feature by feature. As shown in Table~\ref{tab:missing_values_preprocessing}, missingness is limited to four semantic predictors: \texttt{complexity}, \texttt{practice}, \texttt{caused}, and \texttt{drive}. The feature \texttt{complexity} contains the largest number of missing values, with 101 missing entries, corresponding to approximately 18.9\% of the dataset. The features \texttt{practice} and \texttt{caused} each contain 39 missing entries, while \texttt{drive} contains only one missing value. Overall, 102 rows contain at least one missing value, while 433 rows are complete.
+\label{subsec}
+The preprocessing phase is designed to produce a clean, reproducible, and statistically usable version of the rating dataset before any exploratory or predictive analysis is performed. The guiding principle of this phase is to preserve as much valid lexical information as possible while avoiding data leakage between training and test data.
+We start from the 65-feature version of the dataset, in which each observation corresponds to a lexical entry and each predictor corresponds to an experiential semantic attribute. The dataset contains three structural columns, namely \texttt{entry\_id}, \texttt{word}, and \texttt{target\_word\_class}, plus 65 semantic features. The target variable is represented by three lexical-semantic classes: \emph{noun}, \emph{verb}, and \emph{adjective}. In the first preprocessing script, we verify that all required columns are present, that the expected number of semantic predictors is equal to 65, and that the target variable contains only valid class labels.
+During the initial cleaning step, we do not apply any statistical transformation to the predictors. We only perform structural checks. Exact duplicated rows are searched for and removed, none was found. We also inspect duplicated word forms. This second check identifies two rows corresponding to the word \emph{used}, which appears once as an adjective and once as a verb. These rows are not removed, because the statistical unit of the analysis is the lexical entry rather than the orthographic word form alone. A repeated word form with a different lexical-semantic class is therefore considered a valid observation. We then examine missing values feature by feature. As shown in Table~\ref{tab:missing_values_preprocessing}, missingness is limited to four semantic predictors: \texttt{complexity}, \texttt{practice}, \texttt{caused}, and \texttt{drive}. The feature \texttt{complexity} contains the largest number of missing values, with 101 missing entries, corresponding to approximately 18.9\% of the dataset. The features \texttt{practice} and \texttt{caused} each contain 39 missing entries, while \texttt{drive} contains only one missing value. Overall, 102 rows contain at least one missing value, while 433 rows are complete.
 \begin{table}[H]
 \centering
 \begin{tabular}{lrr}
@@ -191,7 +188,10 @@ drive & 1 & 0.19\% \\
 \label{tab:missing_values_preprocessing}
 \end{table}
 
-We decide not to remove rows with missing values at this stage. This choice is motivated by two reasons. First, the dataset is relatively small, and deleting all incomplete rows would reduce the number of available observations from 535 to 433. Second, because the target distribution is already highly imbalanced, removing observations could further weaken the representation of the minority classes. We also decide not to remove the four features with missing values, because the missingness is concentrated and manageable, and because the 65 attributes define the original semantic representation that we want to preserve. Missing values are therefore retained after the initial cleaning step and handled later through imputation.
+We decide not to remove rows with missing values at this stage. This choice is motivated by two reasons. 
+First, the dataset is relatively small, and deleting all incomplete rows would reduce the number of available observations from 535 to 433. 
+Second, because the target distribution is already highly imbalanced, removing observations could further weaken the representation of the minority classes.
+We also decide not to remove the four features with missing values, because the missingness is concentrated and manageable, and because the 65 attributes define the original semantic representation that we want to preserve. Missing values are therefore retained after the initial cleaning step and handled later through imputation.
 After structural cleaning, we create a train--test split. The split is performed before imputation and standardization, because all preprocessing parameters must be estimated only on the training data. We use an 80/20 split with stratification on \texttt{target\_word\_class}. Stratification is necessary because the target classes are strongly unbalanced, and a purely random split could produce unstable or poorly representative minority-class partitions. The resulting training set contains 428 observations, while the test set contains 107 observations. As reported in Table~\ref{tab:stratified_split_distribution}, the class proportions are preserved very closely across the full dataset, training set, and test set.
 \begin{table}[H]
 \centering
@@ -216,7 +216,7 @@ Test & adjective & 8 & 7.48\% \\
 \label{tab:stratified_split_distribution}
 \end{table}
 The stratified split also allows us to compute a first reference baseline. Since the majority class is \emph{noun}, a classifier that always predicts \emph{noun} would obtain an accuracy of approximately 0.811 on the full dataset. This value is not used as a final modelling result, but it is important as a warning: any supervised model must be evaluated against this trivial baseline and must be judged with metrics that account for minority-class performance.
-The third preprocessing step consists of missing-value imputation and feature standardization. Both operations are fitted exclusively on the training set and then applied to the test set. This is a central methodological constraint: if imputation values or scaling parameters were computed using the whole dataset, information from the test set would enter the training pipeline, producing data leakage and an overly optimistic evaluation.
+The third preprocessing step consists of missing-value imputation and feature standardization. Both operations are fitted exclusively on the training set and then applied to the test set. This is a central methodological constraint: if imputation values or scaling parameters were computed using the whole dataset, information from the test set would enter the training pipeline, producing data leakage and an overly optimistic evaluation\cite{james2013introduction}.
 For imputation, we use median imputation. The median is preferred because it is simple, reproducible, and more robust than the mean in the presence of asymmetry or outlying values. Since the variables are numeric semantic ratings, median imputation provides a conservative replacement strategy that preserves the scale of each feature without introducing model-based assumptions. The imputer is fitted on the 428 training observations. The median values learned from the training set are then used to impute both training and test data. As summarized in Table~\ref{tab:imputation_effect}, before imputation, 81 training rows and 21 test rows contain at least one missing value. After imputation, both sets contain zero missing values.
 
 \begin{table}[H]
@@ -234,30 +234,15 @@ Test & 21 & 0 \\
 \end{table}
 
 After imputation, we standardize all 65 semantic features using a standard score transformation. The scaler is fitted only on the imputed training set, estimating one mean and one standard deviation for each feature. These parameters are then applied to both training and test data. Standardization is required because several subsequent methods are scale-sensitive: PCA depends on variances and covariances, clustering and k-nearest-neighbor methods depend on distances, and regularized models such as Ridge, LASSO, and Elastic Net penalize coefficients in a way that is not invariant to predictor scale. Without standardization, features with larger numerical dispersion could dominate the analysis for purely metric reasons.
+The standardization diagnostics confirm that the transformation behaves as expected on the training data. After scaling, the maximum absolute feature mean in the training set is approximately \(2.45 \times 10^{-16}\), while the feature standard deviations are numerically equal to one, up to floating-point precision. This confirms that the standardized training matrix is centered and scaled correctly. The test set is transformed using the training-set parameters, preserving its role as external evaluation data.
 
-The standardization diagnostics confirm that the transformation behaves as expected on the training data. After scaling, the maximum absolute feature mean in the training set is approximately \(2.45 \times 10^{-16}\), while the feature standard deviations are numerically equal to one, up to floating-point precision. This confirms that the standardized training matrix is centered and scaled correctly. The test set is not re-centered independently; it is transformed using the training-set parameters, preserving its role as external evaluation data.
-
-At the end of preprocessing, we obtain four main datasets: the raw train and test sets, the imputed train and test sets, and the standardized train and test sets. The imputed but unscaled datasets are useful for methods that do not require standardized predictors, whereas the standardized datasets are used for PCA, clustering, distance-based methods, and regularized classification. The preprocessing phase therefore produces a controlled and leakage-free foundation for all subsequent analyses.
-% ============================================================
-% SUBSECTION II — UNSUPERVISED EXPLORATION OF THE SEMANTIC SPACE
-%
-% Figure attese in figures/
-%   figures/pca_scree_plot.png
-%   figures/pca_cumulative_variance.png
-%   figures/pca_biplot_pc1_pc2.png
-%   figures/pca_loadings_pc1.png
-%   figures/pca_loadings_pc2.png
-%   figures/kmeans_elbow_inertia.png
-%   figures/kmeans_silhouette_by_k.png
-%   figures/kmeans_clusters_pc12_k2.png
-%   figures/kmeans_clusters_pc12_k10.png
-%   figures/ahc_dendrogram_k10.png
-%   figures/ahc_clusters_pc12_k2.png
-%   figures/ahc_clusters_pc12_k10.png
-%   figures/cluster_vs_label_kmeans_k3.png
-%   figures/cluster_vs_label_ahc_k3.png
-%
-% ============================================================
+At the end of preprocessing, we obtain four main datasets: \begin{enumerate}
+    \item the raw train and test sets,
+    \item the imputed but unscaled datasets,
+    \item the imputed and scaled train and test sets,
+    \item and the standardized train and test sets.
+\end{enumerate}
+The imputed but unscaled datasets are useful for methods that do not require standardized predictors, whereas the standardized datasets are later used for PCA, clustering, distance-based methods, and regularized classification. The preprocessing phase therefore produces a controlled and leakage-free foundation for all subsequent analyses.
 
 \subsection{II. Unsupervised exploration of the semantic space}
 \label{subsec:unsupervised}
@@ -335,7 +320,7 @@ though the boundaries are not sharp.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{pca_biplot_pc1_pc2.png}
+    \includegraphics[width=0.25\textwidth]{pca_biplot_pc1_pc2.png}
     \caption{Training observations projected onto PC1 and PC2.
     Colours indicate morphosyntactic class:
     \emph{Thing} (nouns), \emph{Action} (verbs), \emph{Property} (adjectives).
@@ -540,14 +525,10 @@ unsupervised exploration alone.
 
 \subsection{III. Supervised classification on the original feature space}
 
-In this phase, we formulate a multiclass supervised learning problem aimed at predicting the lexical-semantic labels (\emph{Thing}, \emph{Action}, \emph{Property}) from the original semantic feature space. The objective is to quantify how much of the categorical structure of lexical meaning is captured by the experiential attributes and to understand the role of redundancy, multicollinearity, and model complexity in this setting.
-
+In this phase, we formulate a multiclass supervised learning problem aimed at predicting the lexical-semantic labels from the original semantic feature space. The objective is to quantify how much of the categorical structure of lexical meaning is captured by the experiential attributes and to understand the role of redundancy, multicollinearity, and model complexity in this setting.
 \paragraph{Baseline model}
-
-We begin with a multinomial logistic regression model, which provides a natural baseline within the generalized linear model framework. This model assumes a linear relationship between the predictors and the log-odds of class membership and serves as a reference point for all subsequent analyses.
-
+We begin with a multinomial logistic regression model, which provides a natural baseline within the generalized linear model framework for multiclass classification, modelling class log-odds as functions of the predictors~\cite{james2013introduction,hastie2009elements}. This model assumes a linear relationship between the predictors and the log-odds of class membership and serves as a reference point for all subsequent analyses.
 The baseline achieves strong performance, as reported in Table~\ref{tab:phase3_baseline}.
-
 \begin{table}[H]
 \centering
 \begin{tabular}{lcc}
@@ -560,11 +541,9 @@ Multinomial Logistic baseline & 0.9533 & 0.8904 \\
 \caption{Baseline multinomial logistic regression performance on the original labels.}
 \label{tab:phase3_baseline}
 \end{table}
-
 The high accuracy indicates that the semantic feature space is highly informative. However, the lower macro F1 (0.8904) compared to accuracy suggests an imbalance in class-wise performance, meaning that some classes are easier to predict than others.
-
 This behavior is confirmed by the confusion matrix in Figure~\ref{fig:phase3_baseline_cm}.
-
+From the confusion matrix, it is evident that misclassifications are not uniformly distributed across classes, indicating overlapping regions in the feature space.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{baseline_confusion_matrix_test.png}
@@ -572,12 +551,8 @@ This behavior is confirmed by the confusion matrix in Figure~\ref{fig:phase3_bas
 \label{fig:phase3_baseline_cm}
 \end{figure}
 
-From the confusion matrix, it is evident that misclassifications are not uniformly distributed across classes, indicating overlapping regions in the feature space.
-
 \paragraph{Multicollinearity and feature structure}
-
 Before applying more advanced models, we analyze the structure of the feature space. The correlation heatmap in Figure~\ref{fig:phase3_corr_heatmap} shows the presence of strongly correlated blocks of variables.
-
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{correlation_heatmap_train.png}
@@ -626,8 +601,7 @@ Regularization also induces sparsity, reducing the number of active predictors. 
 \caption{Top LASSO coefficients.}
 \label{fig:phase3_lasso_coeff}
 \end{figure}
-
-Elastic Net, shown in Figure~\ref{fig:phase3_enet_coeff}, distributes weights more smoothly across correlated variables.
+Elastic Net, shown in Figure~\ref{fig:phase3_enet_coeff}, distributes weights more smoothly across correlated variables, consistently with its tendency to retain groups of related predictors more stably than pure LASSO in the presence of multicollinearity~\cite{zou2005regularization}.
 
 \begin{figure}[H]
 \centering
@@ -682,80 +656,359 @@ Overall, the results show that:
 \item regularization improves both stability and performance;
 \item a reduced subset of features is sufficient for accurate classification.
 \end{itemize}
+\subsection{IV. Alternative classifiers}
 
-\subsection{IV. High-dimensional expansion and feature screening}
-
-To further explore the structure of the data, we consider a high-dimensional extension of the feature space. The goal is to increase model expressiveness while controlling for noise and redundancy through feature screening.
-
-\paragraph{Feature screening}
-
-We rank features using ANOVA F-score and mutual information, selecting the most informative subset.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{combined_screening_top_features.png}
-\caption{Top features ranked by the combined screening score.}
-\label{fig:phase4_combined}
-\end{figure}
-
-The ranking shows a steep decay, indicating that a limited number of features carries most of the predictive signal.
-
-\paragraph{Impact}
-
-Screening reduces dimensionality and stabilizes subsequent models, acting as a bridge between raw feature expansion and regularized learning.
-
-\vspace{0.5cm}
-
-\subsection{V. Alternative classifiers}
-
-Finally, we evaluate whether non-linear models can better capture the structure of the data.
+To assess whether the classification results depend specifically on the multinomial logistic framework, an additional comparison was performed using alternative classifiers on the same selected semantic feature space. These classifiers represent complementary modelling assumptions: SVMs search for maximum-margin decision boundaries~\cite{cortes1995support}, Random Forests aggregate multiple decorrelated decision trees~\cite{breiman2001random}, and \(k\)-NN implements a local distance-based classification rule~\cite{cover1967nearest}. The comparison is therefore designed to isolate the effect of the classifier while keeping the data representation fixed.
+The input matrix used in this phase contains \(65\) selected semantic predictors, with \(428\) training observations and \(107\) test observations. The target labels are the operational word-class labels used in the scripts: \emph{adjective}, \emph{noun}, and \emph{verb}. The class distribution remains highly imbalanced, with nouns representing about \(81\%\) of both training and test data. For this reason, the results are evaluated not only through accuracy, but also through balanced accuracy, macro-F1, and weighted-F1.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{lcc}
+\begin{tabular}{llrr}
 \hline
-Model & Accuracy & Macro F1 \\
+\textbf{Split} & \textbf{Class} & \textbf{Count} & \textbf{Percentage} \\
 \hline
-Post-selection Logistic & 0.9720 & 0.9229 \\
-Random Forest & 0.9813 & 0.9486 \\
+Train & adjective & \(31\) & \(7.24\%\) \\
+Train & noun & \(347\) & \(81.07\%\) \\
+Train & verb & \(50\) & \(11.68\%\) \\
+\hline
+Test & adjective & \(8\) & \(7.48\%\) \\
+Test & noun & \(87\) & \(81.31\%\) \\
+Test & verb & \(12\) & \(11.21\%\) \\
 \hline
 \end{tabular}
-\caption{Comparison between linear and non-linear models.}
-\label{tab:phase5_models}
+\caption{Class distribution in the alternative-classifier comparison.}
+\label{tab:alternative-classifiers-class-distribution}
 \end{table}
 
+Table~\ref{tab:alternative-classifiers-results} reports the test-set performance of all classifiers. The dummy majority classifier reaches an accuracy of \(0.813\), which is superficially high because nouns dominate the test set. However, its balanced accuracy is only \(0.333\) and its macro-F1 is \(0.299\), showing that it completely fails on the minority classes. This confirms that accuracy alone is not an adequate metric for this dataset.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\hline
+\textbf{Classifier} & \textbf{Accuracy} & \textbf{Balanced accuracy} & \textbf{Macro-F1} & \textbf{Weighted-F1} \\
+\hline
+Random Forest & \(0.981\) & \(0.917\) & \(0.949\) & \(0.980\) \\
+SVM linear & \(0.972\) & \(0.989\) & \(0.942\) & \(0.974\) \\
+SVM RBF & \(0.972\) & \(0.927\) & \(0.938\) & \(0.972\) \\
+\(k\)-NN & \(0.953\) & \(0.819\) & \(0.883\) & \(0.950\) \\
+Post-selection Logistic & \(0.944\) & \(0.915\) & \(0.875\) & \(0.947\) \\
+Dummy majority & \(0.813\) & \(0.333\) & \(0.299\) & \(0.729\) \\
+\hline
+\end{tabular}
+\caption{Test performance of the alternative classifiers on the selected semantic feature space.}
+\label{tab:alternative-classifiers-results}
+\end{table}
+
+The best overall model by macro-F1 is the Random Forest, with a test macro-F1 of \(0.949\) and an accuracy of \(0.981\). The linear SVM follows closely, with macro-F1 \(0.942\), but it achieves the highest balanced accuracy, \(0.989\), indicating the best average recall across the three classes. The RBF SVM performs similarly, with accuracy \(0.972\) and macro-F1 \(0.938\). The post-selection logistic model remains strong and interpretable, but is slightly below the SVM and Random Forest classifiers. Finally, \(k\)-NN obtains good raw accuracy, \(0.953\), but lower balanced accuracy, \(0.819\), indicating weaker behaviour on at least one minority class. This is plausible because distance-based classifiers are sensitive to class imbalance and to the geometry of the feature space, especially when minority classes occupy small or sparse regions~\cite{cover1967nearest,he2009learning}.
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{alternative_classifiers_accuracy_comparison.png}
-\caption{Accuracy comparison across models.}
-\label{fig:phase5_acc}
+\includegraphics[width=0.92\textwidth]{alternative_classifiers_main_metrics_comparison.png}
+\caption{Main test metrics for the alternative classifiers.}
+\label{fig:alternative-classifiers-main-metrics}
 \end{figure}
 
-\vspace{-1.2em}
+Figure~\ref{fig:alternative-classifiers-main-metrics} shows that all substantive classifiers clearly outperform the dummy majority baseline. The gap is especially visible for macro-F1, which penalizes classifiers that ignore minority classes. Weighted-F1 is systematically higher than macro-F1 because it is dominated by the majority noun class.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{alternative_classifiers_macro_f1_comparison.png}
-\caption{Macro F1 comparison across models.}
-\label{fig:phase5_f1}
+\includegraphics[width=0.82\textwidth]{alternative_classifiers_macro_f1_comparison.png}
+\caption{Macro-F1 comparison across alternative classifiers.}
+\label{fig:alternative-classifiers-macro-f1}
 \end{figure}
 
-Random Forest achieves the best performance, improving macro F1 from 0.9229 to 0.9486. This indicates that non-linear interactions between features play a significant role.
+The macro-F1 comparison in Figure~\ref{fig:alternative-classifiers-macro-f1} confirms the ranking of the classifiers. Random Forest achieves the best balance between precision and recall across classes, followed by the two SVM variants. The post-selection logistic model remains competitive, but the tree ensemble and margin-based classifiers exploit the selected semantic feature space more effectively.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{random_forest_confusion_matrix_test.png}
-\caption{Random Forest confusion matrix.}
-\label{fig:phase5_rf}
+\includegraphics[width=0.82\textwidth]{alternative_classifiers_balanced_accuracy_comparison.png}
+\caption{Balanced accuracy comparison across alternative classifiers.}
+\label{fig:alternative-classifiers-balanced-accuracy}
 \end{figure}
 
-\paragraph{Conclusion}
+Balanced accuracy, shown in Figure~\ref{fig:alternative-classifiers-balanced-accuracy}, gives a slightly different picture. The linear SVM is the best model under this metric, because it correctly recovers all adjectives and all verbs, while making only three errors on nouns. Random Forest has the best macro-F1 and accuracy, but its balanced accuracy is lower because it misses two adjectives.
 
-The comparison highlights a key result: while linear models capture most of the signal, non-linear classifiers further improve performance by modeling interactions between features. This confirms that semantic representations are structured and that meaning emerges from combinations of attributes rather than isolated dimensions.
+The confusion matrices provide a more detailed interpretation of these results. The dummy majority classifier assigns every observation to \emph{noun}; therefore, it correctly classifies all nouns but fails completely on adjectives and verbs. The post-selection logistic model improves substantially, correctly classifying \(7/8\) adjectives, \(83/87\) nouns, and \(11/12\) verbs. The linear SVM correctly classifies all adjectives and all verbs, with only three nouns predicted as adjectives. The RBF SVM makes only three errors overall. Random Forest makes only two errors, both adjectives predicted as nouns. The \(k\)-NN classifier correctly classifies all nouns, but misclassifies three adjectives and two verbs as nouns, which explains its lower balanced accuracy.
+
+\begin{figure}[H]
+\centering
+
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{dummy_majority_confusion_matrix_test.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{post_selection_logistic_confusion_matrix_test.png}
+\end{minipage}
+
+\vspace{0.4cm}
+
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{svm_linear_confusion_matrix_test.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{svm\_rbf\_confusion\_matrix\_test.png}
+\end{minipage}
+
+\vspace{0.4cm}
+
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{random\_forest\_confusion\_matrix\_test.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{k\_nn\_confusion\_matrix\_test.png}
+\end{minipage}
+
+\caption{Test confusion matrices for the alternative classifiers. From top-left to bottom-right: dummy majority, post-selection logistic, linear SVM, RBF SVM, Random Forest, and \(k\)-NN.}
+\label{fig:alternative-classifiers-confusion-matrices}
+\end{figure}
+
+The hyperparameter search was performed using three-fold cross-validation with macro-F1 as the scoring criterion. Table~\ref{tab:alternative-classifiers-best-params} reports the selected configurations. The RBF SVM obtains the best cross-validated macro-F1, while Random Forest obtains the best test macro-F1. This difference suggests that the final test ranking should be interpreted cautiously, given the small number of minority-class observations in the test set.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llr}
+\hline
+\textbf{Classifier} & \textbf{Best parameters} & \textbf{Best CV macro-F1} \\
+\hline
+Post-selection Logistic & \(C=1.0\) & \(0.904\) \\
+SVM linear & \(C=1.0\) & \(0.890\) \\
+SVM RBF & \(C=1.0,\ \gamma=0.01\) & \(0.915\) \\
+Random Forest & \(n_{\text{estimators}}=100,\ \text{max\_depth}=\texttt{None},\ \text{min\_samples\_split}=2\) & \(0.868\) \\
+\(k\)-NN & \(k=3,\ \text{metric}=\texttt{euclidean},\ \text{weights}=\texttt{uniform}\) & \(0.844\) \\
+\hline
+\end{tabular}
+\caption{Best hyperparameters selected by cross-validation for the alternative classifiers.}
+\label{tab:alternative-classifiers-best-params}
+\end{table}
+
+Overall, the comparison shows that the selected semantic feature space is highly predictive of word class across different classifier families. The dummy majority baseline demonstrates the misleading nature of raw accuracy under class imbalance. The post-selection logistic model provides a strong and interpretable reference point, while SVMachieves the best balanced accuracy and the strongest minority-class recall, suggesting that the selected semantic space is close to being linearly separable under a maximum-margin criterion~\cite{cortes1995support}, and Random Forest achieves the best global accuracy and macro-F1, consistently with the ability of tree ensembles to capture nonlinear effects and interactions among predictors without specifying them explicitly in a parametric model~\cite{breiman2001random}. This indicates that the semantic predictors selected in the previous phases contain robust class-discriminative information, not tied to a single modelling framework.
+
+\subsection{V. High-dimensional expansion and feature screening}
+
+After the first supervised analyses on the original semantic representation, the project moves to a high-dimensional version of the Binder/Testa dataset. The purpose of this phase is to test whether the three lexical-semantic classes can be better separated when the original semantic attributes are enriched with nonlinear and interaction-based information. The starting point is the standardized matrix of \(65\) primitive semantic predictors. For each lexical item, let
+
+\[
+X = (X_1, X_2, \ldots, X_{65})
+\]
+
+be the vector of semantic attributes. The high-dimensional representation is obtained by augmenting this vector with all second-degree terms. More precisely, the expanded matrix contains the original semantic features, the squared terms, and all pairwise interactions:
+
+\[
+X_1,\ldots,X_{65},
+\]
+
+\[
+X_1^2,\ldots,X_{65}^2,
+\]
+
+\[
+X_jX_k, \qquad j<k.
+\]
+
+The number of pairwise interactions is
+
+\[
+\binom{65}{2}
+=
+\frac{65 \cdot 64}{2}
+=
+2080.
+\]
+
+Therefore, the total number of predictors in the high-dimensional dataset is
+
+\[
+65 + 65 + 2080 = 2210.
+\]
+
+The transformation changes the structure of the supervised problem. The original dataset has more observations than predictors, whereas the expanded representation has more predictors than training observations. After the train-test split, the training set contains \(428\) observations and \(2210\) predictors, while the test set contains \(107\) observations and the same \(2210\) predictors. The dimensionality ratio is therefore
+
+\[
+\frac{p}{n_{\text{train}}}
+=
+\frac{2210}{428}
+\approx 5.16.
+\]
+
+This means that the number of predictors is more than five times larger than the number of training observations. Table~\ref{tab:hd-expansion-summary} reports the numerical structure of the expanded feature space.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\hline
+\textbf{Quantity} & \textbf{Value} \\
+\hline
+Training observations & \(428\) \\
+Test observations & \(107\) \\
+Original semantic predictors & \(65\) \\
+Squared terms & \(65\) \\
+Pairwise interaction terms & \(2080\) \\
+Total expanded predictors & \(2210\) \\
+Ratio \(p/n_{\text{train}}\) & \(5.16\) \\
+\hline
+\end{tabular}
+\caption{Numerical structure of the high-dimensional semantic feature space.}
+\label{tab:hd-expansion-summary}
+\end{table}
+
+The expansion has a semantic motivation. The original predictors measure the marginal contribution of individual experiential dimensions, such as \texttt{vision}, \texttt{motion}, \texttt{practice}, \texttt{social}, \texttt{cognition}, or \texttt{emotion}. The squared terms allow the model to capture nonlinear effects of single semantic dimensions. The interaction terms, instead, represent combined semantic profiles. For instance, an interaction such as \texttt{body\_x\_practice} may be informative for action-related lexical items, while terms such as \texttt{human\_x\_self}, \texttt{path\_x\_cognition}, or \texttt{practice\_x\_caused} may capture more complex semantic patterns involving agency, causality, action structure, and abstract conceptual organization.
+
+At the same time, this expansion creates a statistically difficult learning problem. The original semantic dimensions are already naturally correlated, because experiential attributes belonging to related domains tend to co-occur in word meanings. The second-degree expansion amplifies this dependence: squared terms are directly derived from original variables, and interaction terms share components with one another. Consequently, the expanded matrix is highly redundant and necessarily rank-deficient. Since \(p=2210\) and \(n_{\text{train}}=428\), the rank of the training matrix cannot exceed \(428\). A lower bound for the rank deficiency is therefore
+
+\[
+2210 - 428 = 1782.
+\]
+
+This confirms that an ordinary unregularized multinomial model is not suitable in the expanded feature space. The matrix \(X^\top X\) is singular, and classical coefficient estimates would be unstable or non-unique. This is the reason why the high-dimensional phase requires collinearity diagnostics, screening, and regularized models.
+
+The first diagnostic step investigates pairwise correlations among the \(2210\) expanded predictors. Figure~\ref{fig:hd-correlation-distribution} shows the distribution of absolute pairwise correlations in the high-dimensional training matrix. Most feature pairs have low or moderate correlations, but the long right tail indicates the presence of many strongly correlated pairs. This is expected, since several expanded terms share one original semantic component or combine semantically related dimensions.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{correlation_distribution_train_hd.png}
+\caption{Distribution of absolute pairwise correlations across the \(2210\) expanded predictors.}
+\label{fig:hd-correlation-distribution}
+\end{figure}
+
+The extent of multicollinearity is summarized in Table~\ref{tab:hd-correlation-thresholds}. A large number of feature pairs exceed standard correlation thresholds: more than \(127000\) pairs have absolute correlation above \(0.50\), almost \(29000\) exceed \(0.70\), and \(1945\) pairs exceed \(0.90\). These results confirm that the high-dimensional expansion does not simply increase the number of variables, but also creates a dense structure of redundant and partially overlapping predictors.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{rr}
+\hline
+\textbf{Absolute correlation threshold} & \textbf{Number of feature pairs} \\
+\hline
+\(\geq 0.50\) & \(127467\) \\
+\(\geq 0.70\) & \(28737\) \\
+\(\geq 0.80\) & \(9962\) \\
+\(\geq 0.90\) & \(1945\) \\
+\(\geq 0.95\) & \(404\) \\
+\(\geq 0.99\) & \(3\) \\
+\hline
+\end{tabular}
+\caption{Number of highly correlated feature pairs in the expanded training matrix.}
+\label{tab:hd-correlation-thresholds}
+\end{table}
+
+Figure~\ref{fig:hd-top-collinear-features} reports the expanded terms most involved in high-correlation relationships. Many of these terms belong to coherent semantic domains or combine closely related dimensions, such as auditory, facial, bodily, affective, and perceptual attributes. This confirms that multicollinearity is not random: it reflects the semantic organization of the original attributes and the algebraic dependencies introduced by the second-degree expansion.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{top_collinear_features_hd.png}
+\caption{Top expanded terms involved in high pairwise correlations.}
+\label{fig:hd-top-collinear-features}
+\end{figure}
+
+Because of this structure, the next step is feature screening. The goal of screening is not to estimate the final classifier directly, but to reduce the high-dimensional space before fitting penalized multinomial models. In this phase, each predictor is evaluated marginally with respect to the target variable. This is appropriate in the present setting because the number of predictors is much larger than the number of observations, and a direct search over all possible combinations of features would be statistically unstable and computationally inefficient.
+
+The screening procedure uses three complementary criteria. The first is the ANOVA \(F\)-score, which measures how strongly each feature differs across the three lexical-semantic classes. The second is mutual information, which captures a more general association between each predictor and the target. The third is the marginal class-mean contrast, defined as the largest class-level separation produced by a feature. These criteria are then combined into a single ranking, from which the top \(300\) predictors are retained.
+
+The reduction is substantial:
+
+\[
+2210 \longrightarrow 300.
+\]
+This type of preliminary reduction is standard in ultrahigh-dimensional supervised learning, where screening makes the subsequent modelling step statistically more stable and computationally feasible~\cite{fan2008sure,fan2009ultrahigh,nandy2022covariate}.
+The screening step removes 1910 features, corresponding to approximately \(86.43\%\) of the expanded feature space. The retained set represents only \(13.57\%\) of the original \(2210\) predictors. Table~\ref{tab:screening-summary-hd} summarizes the screening phase.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\hline
+\textbf{Quantity} & \textbf{Value} \\
+\hline
+Features before screening & \(2210\) \\
+Features retained after screening & \(300\) \\
+Features removed & \(1910\) \\
+Retained percentage & \(13.57\%\) \\
+Removed percentage & \(86.43\%\) \\
+\hline
+\end{tabular}
+\caption{Summary of the feature screening step on the high-dimensional representation.}
+\label{tab:screening-summary-hd}
+\end{table}
+
+Figure~\ref{fig:anova-top-features-hd} shows the top predictors according to the ANOVA \(F\)-score. The highest-ranked terms are almost entirely interaction features, especially combinations involving \texttt{practice}, \texttt{short}, \texttt{human}, \texttt{biomotion}, \texttt{body}, \texttt{path}, \texttt{duration}, \texttt{self}, and \texttt{cognition}. This suggests that class separation is strongly associated with joint semantic configurations rather than only with isolated primitive attributes.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{anova_top_features_hd.png}
+\caption{Top ANOVA \(F\)-scores computed on the \(2210\)-feature high-dimensional representation.}
+\label{fig:anova-top-features-hd}
+\end{figure}
+
+Figure~\ref{fig:mi-top-features-hd} reports the top predictors according to mutual information. Compared with the ANOVA ranking, mutual information gives more prominence to both original and squared terms, such as \texttt{complexity}, \texttt{complexity\_sq}, \texttt{practice}, \texttt{practice\_sq}, \texttt{caused}, and \texttt{caused\_sq}. This indicates that some individual semantic dimensions retain strong predictive value even without being combined with other features. At the same time, several interaction terms remain highly ranked, including \texttt{practice\_x\_caused}, \texttt{complexity\_x\_practice}, \texttt{complexity\_x\_caused}, \texttt{practice\_x\_human}, and \texttt{short\_x\_human}.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{mutual_information_top_features_hd.png}
+\caption{Top mutual information scores computed on the \(2210\)-feature high-dimensional representation.}
+\label{fig:mi-top-features-hd}
+\end{figure}Figure~\ref{fig:contrast-top-features-hd} displays the top marginal class-mean contrasts. This ranking is particularly useful for identifying predictors that produce strong separation between at least one lexical class and the others. Again, the top positions are dominated by interaction terms involving action-related, bodily, temporal, causal, and human-related dimensions. The strongest contrasts include \texttt{practice\_x\_human}, \texttt{short\_x\_human}, \texttt{practice\_x\_short}, \texttt{practice\_x\_consequential}, \texttt{biomotion\_x\_short}, \texttt{body\_x\_short}, and 
+\texttt{short\_x\_self}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{marginal_class_contrast_top_features_hd.png}
+\caption{Top marginal class-mean contrasts computed on the \(2210\)-feature high-dimensional representation.}
+\label{fig:contrast-top-features-hd}
+\end{figure}
+The final combined ranking is reported in Figure~\ref{fig:combined-screening-top-features-hd}. This plot provides the actual set of highest-priority predictors selected by the screening procedure. The most relevant terms include \texttt{practice\_x\_human}, \texttt{short\_x\_human}, \texttt{practice\_x\_caused}, \texttt{practice\_x\_short}, \texttt{practice\_x\_consequential},
+ \texttt{biomotion\_x\_short}, \texttt{short\_x\_self}, \texttt{near\_x\_short}, \texttt{practice\_x\_self}, and \texttt{body\_x\_short}. The prevalence of interaction terms confirms that the high-dimensional expansion is informative: the strongest marginal predictors are not merely the original semantic attributes repeated in transformed form, but combinations of semantic dimensions that appear to encode discriminative lexical-class profiles.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{combined_screening_top_features_hd.png}
+\caption{Best selected features according to the combined screening rank.}
+\label{fig:combined-screening-top-features-hd}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{rl}
+\hline
+\textbf{Rank} & \textbf{Selected feature} \\
+\hline
+1 & \texttt{practice\_x\_human} \\
+2 & \texttt{short\_x\_human} \\
+3 & \texttt{practice\_x\_caused} \\
+4 & \texttt{practice\_x\_short} \\
+5 & \texttt{practice\_x\_consequential} \\
+6 & \texttt{biomotion\_x\_short} \\
+7 & \texttt{short\_x\_self} \\
+8 & \texttt{near\_x\_short} \\
+9 & \texttt{practice\_x\_self} \\
+10 & \texttt{body\_x\_short} \\
+11 & \texttt{path\_x\_self} \\
+12 & \texttt{path\_x\_cognition} \\
+13 & \texttt{body\_x\_practice} \\
+14 & \texttt{path\_x\_human} \\
+15 & \texttt{slow\_x\_short} \\
+\hline
+\end{tabular}
+\caption{First fifteen predictors selected by the combined screening procedure.}
+\label{tab:top-screened-features-hd}
+\end{table}
+
+From an interpretive point of view, the selected features are coherent with the lexical-semantic task. Many of the strongest terms involve \texttt{practice}, \texttt{body}, \texttt{biomotion}, and \texttt{path}, which are naturally related to action structure. Other terms involve \texttt{human}, \texttt{self}, \texttt{cognition}, \texttt{caused}, and \texttt{consequential}, which can help separate more abstract, relational, or property-like meanings. The presence of temporal and spatial components such as \texttt{short}, \texttt{duration}, \texttt{near}, and \texttt{path} suggests that lexical classes are not distinguished only by perceptual concreteness, but also by structured combinations of event-related and relational semantic dimensions.
+
+The output of this phase is therefore a reduced high-dimensional matrix containing \(300\) screened predictors. This matrix preserves the most informative terms from the original \(2210\)-feature expansion while removing the majority of weak or redundant predictors. It is used as the input for the following regularized multinomial models, where LASSO and Elastic Net further refine the feature set and estimate sparse class-discrimination patterns.
 \subsection{VI. Final model comparison and interpretation}
 
 This final phase integrates the results obtained across all previous analyses, with the objective of identifying the models that provide the best trade-off between predictive performance, statistical stability, and interpretability. The comparison includes the baseline multinomial logistic regression, the regularized models (LASSO and Elastic Net), the post-selection logistic model, and the alternative non-linear classifiers.
-From a purely predictive perspective, the results clearly indicate that performance improves progressively along the pipeline. The baseline multinomial logistic model achieves an accuracy of 0.9533 and a macro F1-score of 0.8904. Regularization leads to consistent improvements, with Elastic Net reaching 0.9705 accuracy and 0.9200 macro F1. The post-selection model further refines these results, achieving 0.9720 accuracy and 0.9229 macro F1. Finally, the Random Forest classifier outperforms all linear approaches, reaching 0.9813 accuracy and 0.9486 macro F1.
+From a purely predictive perspective, the results clearly indicate that performance improves progressively along the pipeline. The baseline multinomial logistic model achieves an accuracy of 0.9533 and a macro F1-score of 0.8904. Regularization leads to consistent improvements, with Elastic Net reaching 0.9705 accuracy and 0.9200 macro F1. The post-selection model further refines these results, achieving 0.9720 accuracy and 0.9229 macro F1.This refitting step follows the general post-selection logic: after a penalized variable-selection stage, refitting a model on the selected variables can reduce shrinkage bias and provide a clearer final predictive model~\cite{belloni2013least}. Finally, the Random Forest classifier outperforms all linear approaches, reaching 0.9813 accuracy and 0.9486 macro F1.
 These improvements are not marginal. The increase in macro F1 from 0.8904 to 0.9486 represents a substantial gain in balanced classification performance across all classes. This confirms that the successive methodological steps—regularization, feature selection, and non-linear modelling—are not only theoretically justified, but also empirically effective.
 However, predictive performance alone is not sufficient to determine the best model. From the perspective of interpretability, multinomial logistic regression models remain superior. The LASSO and Elastic Net solutions provide sparse and stable representations of the semantic space, identifying a reduced subset of predictors that can be directly interpreted in terms of semantic dimensions. In contrast, Random Forest offers higher predictive accuracy but at the cost of reduced interpretability, since the decision process is distributed across many trees and interactions.
 From a statistical learning perspective, the results also confirm the importance of controlling multicollinearity and dimensionality. The strong correlations observed among semantic features (22 pairs with $|r|\geq 0.8$ and 51 predictors with VIF $\geq 5$) make unregularized models unstable. Regularization and feature selection mitigate this issue by reducing variance and focusing the model on the most informative predictors.
@@ -765,39 +1018,70 @@ Overall, the comparison suggests that no single model is universally optimal. In
 
 \section{Results}
 \label{sec:results}
+The empirical results of the project provide a coherent picture of the Binder/Testa semantic feature space as a highly informative, but strongly imbalanced and redundant, representation for lexical-semantic classification.
 
-The empirical results of the project provide a coherent picture of the statistical properties of the Binder semantic feature space and its suitability for lexical-semantic classification.
-First, the preprocessing phase confirms that the dataset is relatively clean but exhibits two important characteristics: moderate missingness and strong class imbalance. Missing values are concentrated in a small number of features and are successfully handled through median imputation, without loss of observations. The class distribution is highly skewed, with approximately 81\% of observations belonging to the class \emph{Thing}. This imbalance has direct consequences for model evaluation and motivates the use of metrics beyond simple accuracy.
-Second, the unsupervised analysis reveals that the semantic feature space contains meaningful structure, but that this structure does not align directly with the target classes. PCA shows that the first two principal components explain approximately 36\% of the total variance, with a clear interpretation in terms of a concreteness–abstractness axis. Clustering methods identify coherent semantic groupings at a fine-grained level, but these clusters do not correspond strongly to the three lexical-semantic categories. This indicates that the semantic representation captures rich information, but not in a way that directly mirrors morphosyntactic classes.
-Third, the supervised analysis demonstrates that the semantic features are highly informative for classification. Even the baseline multinomial logistic regression achieves high accuracy (0.9533), significantly above the trivial majority-class baseline (~0.811). However, the gap between accuracy and macro F1 reveals that performance is uneven across classes, with minority classes being harder to predict.
-The introduction of regularization leads to consistent improvements. LASSO and Elastic Net increase both accuracy and macro F1, with Elastic Net providing the best balance. These results confirm that controlling multicollinearity improves generalization. Feature selection further enhances performance, showing that a reduced subset of predictors is sufficient to capture most of the relevant signal.
-The high-dimensional expansion combined with feature screening demonstrates that increasing model complexity must be carefully controlled. While the expanded feature space allows the inclusion of non-linear effects and interactions, it also introduces noise and redundancy. Screening successfully reduces dimensionality, preserving the most informative predictors and stabilizing the subsequent models.
-Finally, the comparison with alternative classifiers shows that non-linear models can further improve performance. Random Forest achieves the best results, with 0.9813 accuracy and 0.9486 macro F1, indicating that interactions between semantic features play a significant role in the classification task.
-Overall, the results confirm that the Binder semantic representation is both informative and structured, but also redundant and partially non-linear. The combination of regularization, feature selection, and non-linear modelling provides the most effective strategy for exploiting this representation.
+First, the preprocessing phase confirms that the operational dataset is structurally usable and does not require aggressive cleaning. The starting matrix contains \(535\) lexical entries, \(65\) semantic predictors, and the target variable \texttt{target\_word\_class}. No exact duplicate rows are removed, while two duplicated word forms are detected and retained because the statistical unit is the lexical entry rather than the orthographic form alone. Missingness is not spread uniformly across the whole feature space, but is concentrated in a small number of variables: \texttt{complexity} has \(101\) missing values, corresponding to about \(18.9\%\) of the dataset, while \texttt{practice} and \texttt{caused} have \(39\) missing values each, and \texttt{drive} has only one. After the stratified train-test split, the preprocessing pipeline handles missing values through median imputation fitted on the training set only, followed by standardization fitted again only on the training data. This avoids data leakage and produces a clean modelling matrix with \(428\) training observations and \(107\) test observations.
+
+The most important structural property of the dataset is class imbalance. The full dataset contains \(434\) nouns, \(62\) verbs, and \(39\) adjectives, corresponding respectively to the semantic classes \emph{Thing}, \emph{Action}, and \emph{Property}. Thus, the majority class alone accounts for approximately \(81.1\%\) of the observations. The same proportions are preserved in the split: the test set contains \(87\) nouns, \(12\) verbs, and \(8\) adjectives. This explains why the majority-class baseline reaches approximately \(0.813\) test accuracy despite having no real discriminative ability. Its balanced accuracy is only \(0.333\), and its macro-F1 is approximately \(0.299\), because it completely ignores the two minority classes. For this reason, accuracy is informative only when interpreted together with balanced accuracy, macro-F1, class-wise recall, and confusion matrices.
+
+The unsupervised analysis shows that the semantic feature space contains meaningful internal structure, but this structure does not coincide directly with the three lexical classes. PCA on the \(65\) standardized semantic features shows that the first component explains about \(22.7\%\) of the variance and the second about \(13.4\%\), for a combined explained variance of approximately \(36.1\%\). Ten principal components are needed to explain about \(75\%\) of the total variance. This indicates that the Binder semantic ratings are structured, but not reducible to a very small number of dimensions. Clustering confirms the same pattern. K-Means reaches its best silhouette score at \(k=14\), with silhouette \(0.3099\), while hierarchical clustering also prefers a relatively fine partition, again at \(k=14\), with silhouette \(0.2381\). However, the agreement with the true lexical labels remains weak: for \(k=3\), K-Means obtains ARI \(0.0301\) and NMI \(0.0720\), while hierarchical clustering obtains ARI \(-0.0667\) and NMI \(0.0425\). Even using the best \(k=14\) partitions, the alignment with the lexical labels remains limited. This means that the semantic space captures finer semantic neighborhoods rather than directly reproducing the broad noun/verb/adjective distinction.
+
+The supervised models on the original \(65\)-feature space show that the semantic ratings are highly predictive of lexical class. The unpenalized multinomial logistic regression reaches \(0.9533\) test accuracy, \(0.9191\) balanced accuracy, and \(0.8904\) macro-F1. This is far above the dummy majority baseline and demonstrates that the semantic attributes contain strong class-discriminative information. However, the model also reaches perfect training performance, which suggests that the dataset is easily separable in-sample and that evaluation on held-out data is essential. The regularized LASSO and Elastic Net models obtain the same test performance as the baseline multinomial model on the original \(65\)-feature space. In this specific setting, therefore, regularization does not produce a clear predictive improvement and does not induce true sparsity: both LASSO and Elastic Net keep all \(65\) features active. This result is statistically plausible because \(p=65\) is still much smaller than \(n_{\text{train}}=428\), so the problem is not yet genuinely high-dimensional. The main difficulty in the original feature space is not dimensionality, but class imbalance and multicollinearity.
+
+The multicollinearity diagnostics confirm that the original semantic predictors are correlated in interpretable ways. Among the \(2080\) feature pairs, \(199\) have absolute correlation at least \(0.50\), \(53\) at least \(0.70\), \(22\) at least \(0.80\), and \(2\) at least \(0.90\). The maximum absolute correlation is approximately \(0.937\). VIF diagnostics also show non-negligible redundancy: \(51\) features have VIF above \(5\), and \(17\) above \(10\), with a maximum finite VIF of about \(23.0\). This confirms that semantic attributes are not independent measurements. Perceptual, motor, social, affective, and cognitive dimensions tend to co-occur in word meanings, so coefficient-based interpretations must be treated carefully.
+
+The high-dimensional expansion changes the nature of the problem more substantially. By adding squared terms and all pairwise interactions, the feature space increases from \(65\) to \(2210\) predictors. With \(428\) training observations, this creates a true \(p>n\) setting. The expanded matrix is necessarily rank-deficient, with a lower-bound rank deficiency of \(1782\), and classical VIF cannot be computed because \(X^\top X\) is singular. Pairwise correlations become much more numerous: \(127467\) pairs have absolute correlation at least \(0.50\), \(28737\) at least \(0.70\), \(9962\) at least \(0.80\), \(1945\) at least \(0.90\), and \(404\) at least \(0.95\). This confirms that the expansion introduces both useful semantic interactions and substantial redundancy.
+
+Despite this redundancy, the high-dimensional representation is strongly predictive. A Ridge logistic model fitted on all \(2210\) features reaches \(0.9720\) test accuracy, \(0.9646\) balanced accuracy, and \(0.9290\) macro-F1. Its confusion matrix shows only three errors: two \emph{Things} are classified as \emph{Properties}, and one \emph{Action} is classified as \emph{Property}. This improvement over the \(65\)-feature baseline suggests that nonlinear terms and interactions contain additional class information. In semantic terms, this is plausible because lexical classes are unlikely to depend only on isolated attributes. For example, action-like meanings may be better captured by combinations involving \texttt{practice}, \texttt{body}, \texttt{biomotion}, and \texttt{path}, while property-like or abstract meanings may emerge from combinations involving \texttt{human}, \texttt{self}, \texttt{cognition}, \texttt{caused}, and \texttt{consequential}.
+
+Feature screening is therefore essential in the high-dimensional phase. The screening step reduces the feature space from \(2210\) predictors to \(300\), removing \(1910\) variables while retaining the terms with the strongest marginal evidence. The highest-ranked features are almost entirely interaction terms, including \texttt{practice\_x\_human}, \texttt{short\_x\_human}, \texttt{practice\_x\_caused}, \texttt{practice\_x\_short}, \newline \texttt{practice\_x\_consequential}, \texttt{biomotion\_x\_short}, \texttt{short\_x\_self}, \texttt{near\_x\_short}, \texttt{practice\_x\_self}, and \texttt{body\_x\_short}. This is one of the clearest results of the project: the most informative high-dimensional predictors are not arbitrary polynomial artifacts, but interpretable semantic combinations. The selected terms are strongly connected to action structure, embodiment, agency, causality, spatial-temporal organization, and self/human-related conceptual content.
+
+After screening, LASSO and Elastic Net achieve perfect performance on the held-out test set: \(1.000\) accuracy, \(1.000\) balanced accuracy, \(1.000\) macro-F1, and \(1.000\) weighted-F1. The final post-selection logistic model derived from the LASSO active set also obtains perfect test performance. This result indicates that, within this split, the screened interaction-based semantic representation separates the three classes completely. At the same time, it must be interpreted cautiously. The test set is small, especially for the minority classes, with only \(12\) verbs and \(8\) adjectives. Therefore, perfect performance should not be read as proof that the problem is universally solved, but as evidence that the high-dimensional semantic expansion creates a very strong separating signal in the available data.
+
+The sparsity analysis shows that the high-dimensional regularized models are selective, but not extremely sparse. LASSO retains \(234\) active features out of the \(300\) screened predictors, while Elastic Net retains \(253\). In coefficient terms, LASSO sets about \(47.7\%\) of the class-specific coefficients to zero, whereas Elastic Net sets about \(41.8\%\) to zero. This behaviour is coherent with the structure of the problem. Because many semantic interactions are correlated and partially redundant, Elastic Net tends to retain groups of related predictors, while LASSO is more aggressive but still keeps a large active set. The result suggests that lexical-class discrimination is distributed across multiple semantic combinations rather than concentrated in a very small number of isolated variables.
+
+Finally, the alternative classifier comparison confirms that the semantic representation is not only effective for multinomial logistic models. On the selected \(65\)-feature semantic space used in the extra comparison, Random Forest achieves the best test accuracy and macro-F1, with \(0.9813\) accuracy and \(0.9486\) macro-F1. The linear SVM obtains slightly lower macro-F1, \(0.9415\), but the best balanced accuracy, \(0.9885\), because it correctly classifies all adjectives and all verbs, making errors only on nouns. The RBF SVM also performs strongly, with \(0.9720\) accuracy and \(0.9381\) macro-F1. The post-selection logistic model remains competitive, with \(0.9439\) accuracy and \(0.8748\) macro-F1, while \(k\)-NN reaches \(0.9533\) accuracy but lower balanced accuracy, \(0.8194\), because it is less reliable on minority classes. These results indicate that the semantic space supports several modelling strategies, but margin-based and ensemble classifiers exploit it particularly well.
+Overall, the results show that the Binder semantic representation is informative, structured, redundant, and partly nonlinear. The original \(65\)-feature matrix already supports strong lexical-semantic classification, but its correlated structure limits sparse feature selection. The high-dimensional expansion exposes additional discriminative information through semantic interactions, but also creates severe multicollinearity and \(p>n\) instability. The best results are obtained when expansion is combined with screening and regularization. Scientifically, this supports the central hypothesis of the project: lexical classes are not predicted only by isolated semantic dimensions, but by structured configurations of perceptual, motor, causal, social, cognitive, and temporal attributes.
+
 
 \vspace{0.5cm}
 
 \section{Discussion}
 \label{sec:discussion}
 
-The findings of this project provide several insights into the nature of semantic representations and the challenges of statistical learning in this domain.
-A first important observation is that semantic similarity and lexical classification are not equivalent problems. The unsupervised analysis shows that the feature space naturally organizes words into semantically coherent clusters, such as groups of animals, food items, or emotional concepts. However, these clusters do not align neatly with morphosyntactic categories. This suggests that lexical classes such as \emph{Thing}, \emph{Action}, and \emph{Property} are not simply reflections of the geometry of the semantic space, but rather more abstract linguistic constructs.
-A second key result concerns the role of multicollinearity. The strong correlations observed among semantic features are not a technical artifact, but a fundamental property of the representation. Many experiential dimensions are conceptually related and tend to co-occur. From a statistical perspective, this creates instability in model estimation and makes feature selection more challenging. The effectiveness of Elastic Net compared to LASSO alone highlights the importance of accounting for correlated predictors rather than selecting them independently.
-A third insight relates to the distributed nature of semantic information. The fact that good classification performance can be achieved using a reduced subset of features indicates that not all dimensions are equally informative. At the same time, the superiority of non-linear models suggests that the predictive signal is not concentrated in individual features, but rather in their interactions. This supports the view that word meaning emerges from combinations of semantic attributes rather than from isolated dimensions.
-The comparison between linear and non-linear models also illustrates a fundamental trade-off in statistical learning. Linear models offer interpretability and theoretical clarity, making them suitable for understanding which features matter. Non-linear models, on the other hand, provide higher predictive accuracy but are more difficult to interpret. In this project, both perspectives are necessary: linear models for interpretation, and non-linear models for performance.
-Finally, the high-dimensional extension of the feature space highlights the risks and opportunities of increasing model complexity. While adding interaction terms can potentially capture richer semantic patterns, it also increases noise and overfitting risk. The success of feature screening demonstrates that dimensionality reduction is essential in such settings, acting as a bridge between expressiveness and stability.
+The findings of this project provide several insights into the relation between semantic representation, lexical classification, and high-dimensional statistical learning. From a linguistic point of view, the first important result is that semantic similarity and lexical-class membership are connected, but they are not equivalent. The unsupervised analysis shows that the Binder/Testa feature space naturally contains meaningful semantic structure: PCA and clustering reveal broad gradients and coherent groups of lexical items, such as concrete entities, food-related words, animal names, affective concepts, and action-like meanings. However, these data-driven structures do not align perfectly with the target classes \emph{Thing}, \emph{Action}, and \emph{Property}. This suggests that lexical classes are not simple geometric clusters in the semantic space. Rather, they should be understood as higher-level linguistic categories that are partially grounded in semantic content, but not reducible to semantic similarity alone.
+This distinction is important for the interpretation of the whole project. If the unsupervised clusters had corresponded directly to the three lexical classes, the classification problem would have been almost trivial: the semantic space itself would have already separated nouns, verbs, and adjectives without supervision. Instead, the weak alignment between clusters and labels indicates a more complex situation. The semantic representation captures fine-grained conceptual organization, whereas the supervised models learn the specific configurations of semantic features that are relevant for lexical-class discrimination. In linguistic terms, the results support an interface view: morphosyntactic or lexical-semantic classes are influenced by conceptual structure, but they are not identical to conceptual similarity.
+A second central result concerns the role of multicollinearity. The strong correlations observed among semantic features should not be interpreted merely as a technical problem. They reflect the nature of the semantic representation itself. Experiential dimensions such as perception, motion, body, affect, cognition, social interaction, causality, and attention are conceptually related and often co-occur in word meanings. For example, action-related words may jointly activate bodily, motor, path-related and causal dimensions; affective words may combine emotional, social and cognitive attributes; concrete entity words may involve visual, spatial, tactile and object-related features. Therefore, redundancy in the predictor matrix is not accidental, but is part of the structure of conceptual representation~\cite{mcrae1997nature,cree2003analyzing,binder2016toward}.
+From a statistical point of view, however, this redundancy has direct consequences. Correlated predictors make coefficient estimates less stable and complicate feature selection, because several variables may carry partially overlapping information. This explains why regularization is methodologically appropriate in this setting. LASSO is useful because it introduces sparsity, but in the presence of strongly correlated semantic dimensions it may select one predictor among several related alternatives. Elastic Net is better suited to this type of structure because its mixed \(L_1/L_2\) penalty can preserve groups of correlated predictors more stably~\cite{tibshirani1996regression,zou2005regularization,friedman2010regularization}. The results therefore confirm that regularization is not only a way to improve prediction, but also a necessary tool for obtaining a more stable interpretation of a redundant semantic feature space.
+A third insight concerns the distributed nature of lexical-semantic information. The results do not suggest that lexical classes are identified by a small number of isolated semantic dimensions. On the contrary, the strongest evidence comes from combinations of features. The high-dimensional expansion shows that interaction terms involving dimensions such as \texttt{practice}, \texttt{body}, \texttt{biomotion}, \texttt{path}, \texttt{human}, \texttt{self}, \texttt{caused}, and \texttt{cognition} are among the most informative predictors. This indicates that the distinction between \emph{Thing}, \emph{Action}, and \emph{Property} depends on structured semantic configurations. For instance, action-like meanings are not captured only by a single motion feature, but by the joint contribution of bodily, motor, temporal, path-related and causal information. Similarly, property-like and abstract meanings may emerge from combinations of cognitive, social, evaluative and relational dimensions.
+This result has a clear neurolinguistic interpretation, although it must be stated cautiously. The Binder features used here are not direct neural measurements, but they are motivated by neurocognitive theories of semantic representation. The fact that these features support lexical classification suggests that neurocognitively motivated semantic dimensions contain information relevant to linguistic category structure. The results are therefore compatible with grounded and distributed accounts of word meaning, according to which conceptual knowledge is organized through partially sensory, motor, affective, social and cognitive systems rather than through purely amodal symbolic labels~\cite{barsalou1999perceptual,meteyard2012coming,binder2016toward}. At the same time, the analysis does not show that the brain performs lexical classification through the same statistical mechanisms used by our models. It shows instead that a brain-inspired semantic representation contains enough structured information to make lexical-class prediction possible.
+The comparison between linear and non-linear models further clarifies the nature of the predictive signal. Linear and regularized multinomial models are valuable because they provide interpretable coefficients and allow the selected semantic dimensions to be inspected directly. They are therefore appropriate when the goal is to understand which semantic attributes contribute to lexical-class discrimination. Non-linear models, especially Random Forest, achieve stronger predictive performance because they can exploit complex interactions among predictors without requiring those interactions to be explicitly specified in a linear formula~\cite{breiman2001random}. The strong performance of SVM models also suggests that, after feature selection, the classes become close to separable in the selected semantic space under a margin-based criterion~\cite{cortes1995support}. The project therefore reveals a trade-off: interpretable linear models are useful for semantic explanation, while more flexible classifiers are useful for maximizing predictive accuracy.
+Finally, the high-dimensional extension highlights both the opportunities and the risks of increasing model complexity. Expanding the feature space from \(65\) to \(2210\) predictors allows the analysis to represent nonlinear effects and interactions between semantic dimensions. This is useful because the results show that many discriminative patterns are interaction-based. However, the same expansion also creates a \(p>n\) problem, severe multicollinearity, rank deficiency, and a higher risk of overfitting. The success of feature screening demonstrates that dimensionality reduction is essential in this context: screening acts as a bridge between semantic expressiveness and statistical stability by reducing the expanded space to a smaller set of informative candidate predictors~\cite{fan2008sure,fan2009ultrahigh,nandy2022covariate}. For this reason, the high-dimensional results should be interpreted as evidence that interaction-based semantic structure is highly informative, but also as a reminder that such results require careful control through screening, regularization and cautious evaluation~\cite{yu2020veridical}.
+\paragraph{Linguistic and neurolinguistic interpretation.}
+From a linguistic perspective, the results suggest that lexical classes are not arbitrary formal labels, but are systematically related to the semantic structure of words. The fact that the original semantic feature space already supports strong supervised classification indicates that nouns, verbs, and adjectives differ not only in their morphosyntactic behaviour, but also in their experiential semantic profiles. Nouns, corresponding to \emph{Things}, tend to be associated with object-like and entity-like semantic configurations; verbs, corresponding to \emph{Actions}, are more naturally connected to eventive, motor, causal and path-related dimensions; adjectives or property-like items are instead linked to attribute-based, evaluative, scalar or more abstract semantic information. Therefore, the classification task does not merely recover grammatical labels from noise, but exploits meaningful semantic regularities that are linguistically interpretable.
+At the same time, the unsupervised analysis shows that semantic organization and morphosyntactic classification are not the same phenomenon. PCA and clustering reveal coherent semantic structure, including broad gradients such as concreteness versus abstractness and finer semantic groupings, but these structures do not perfectly align with the three lexical classes. This means that the semantic space is organized primarily around dimensions of conceptual content, while lexical classes are better understood as higher-level linguistic categories that partially depend on, but do not coincide with, semantic similarity. In linguistic terms, the results therefore support an interface view: semantic features contribute to the distinction between nouns, verbs and adjectives, but morphosyntactic class membership cannot be reduced to a simple clustering of meanings. The high-dimensional results strengthen this interpretation. The most informative predictors after feature expansion are mostly interaction terms, such as combinations involving \texttt{practice}, \texttt{human}, \texttt{body}, \texttt{biomotion}, \texttt{path}, \texttt{self}, \texttt{caused}, and \texttt{cognition}. This suggests that lexical-class information is not encoded by single semantic dimensions in isolation, but by configurations of semantic properties. For instance, action meanings are plausibly characterized by the joint presence of bodily, motor, causal and path-related information, rather than by a single feature such as \texttt{motion} alone. Similarly, property-like or more abstract meanings may emerge from combinations of cognitive, social, evaluative and relational dimensions. This supports a compositional and distributed view of lexical semantics, where the relevant signal lies in structured interactions among semantic attributes.
+From a neurolinguistic perspective, these findings are compatible with brain-based and embodied accounts of conceptual representation. The Binder semantic features are not direct neural measurements in this project, but they are cognitively and neurobiologically motivated dimensions derived from theories of perceptual, motor, affective and cognitive grounding~\cite{binder2016toward,meteyard2012coming,barsalou1999perceptual}. The fact that these features predict lexical classes suggests that neurocognitively motivated semantic dimensions contain information relevant not only to conceptual similarity, but also to the organization of lexical categories. In this sense, the results are consistent with the idea that lexical knowledge is distributed across partially modality-specific semantic systems, rather than stored as purely amodal symbolic labels.
+However, the neurolinguistic interpretation must remain cautious. The present analysis does not demonstrate that the brain explicitly classifies words through the same statistical mechanisms used by our models. It also does not provide direct evidence about neural activation patterns. Rather, it shows that a semantic representation inspired by neurocognitive theories contains enough structured information to distinguish lexical classes. This provides indirect support for the hypothesis that the organization of lexical categories may be grounded in distributed semantic information involving sensory, motor, affective, social, temporal and cognitive dimensions.
+The distinction between the unsupervised and supervised results is especially important in this respect. If the semantic space had clustered perfectly into nouns, verbs and adjectives, one could argue that lexical categories are simply natural semantic clusters. Instead, the weak alignment between clusters and labels suggests a more nuanced picture: the semantic system appears to be organized around experiential and conceptual dimensions, while morphosyntactic classes emerge from particular configurations of those dimensions. This is compatible with the idea that grammar and semantics interact, but remain distinct levels of linguistic organization.
+Overall, the linguistic and neurolinguistic conclusion is that lexical classes are semantically grounded but not semantically reducible. The Binder feature space captures meaningful experiential structure; supervised models show that this structure is predictive of lexical class; and high-dimensional interactions reveal that the relevant information lies in combinations of semantic dimensions. Therefore, the project supports a view of lexical classification as an interface phenomenon between conceptual semantics, morphosyntax and neurocognitively grounded representations of meaning.
 
 \vspace{0.5cm}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-This project has reformulated the analysis of the Binder semantic dataset within the framework of high-dimensional statistical learning. Starting from a cognitively motivated representation of word meaning, we have developed a structured pipeline combining preprocessing, unsupervised exploration, supervised classification, multicollinearity diagnostics, feature screening, regularization, and model comparison.
-The results show that the semantic feature space is highly informative for lexical classification, even when using simple linear models. However, the presence of strong correlations and redundancy requires the use of regularization techniques to obtain stable and interpretable models. Feature selection further improves performance by identifying a reduced subset of relevant predictors.
-The extension to high-dimensional representations reveals that non-linear effects and interactions between semantic features play an important role. This is confirmed by the superior performance of Random Forest, which captures complex dependencies that linear models cannot fully represent.
-From a broader perspective, the project highlights the importance of combining different methodological tools. Unsupervised learning provides insight into the structure of the semantic space, supervised learning quantifies predictive performance, and regularization and screening ensure stability in high-dimensional settings. Together, these approaches offer a comprehensive framework for analysing semantic data.
-Future work could extend this analysis in several directions. Larger and more balanced datasets would allow more robust evaluation of minority classes. Alternative representations, such as distributional or contextual embeddings, could be compared with the Binder semantic features. Finally, more advanced models, including deep learning approaches, could be explored to further investigate the interaction between semantic structure and predictive performance.
-In conclusion, the Binder semantic representation proves to be a rich and informative basis for statistical learning. When combined with appropriate modelling strategies, it allows both accurate prediction of lexical classes and meaningful interpretation of the underlying semantic dimensions.
+
+This project has reformulated the analysis of the Binder semantic dataset within the framework of high-dimensional statistical learning. The research question was whether a cognitively motivated semantic representation, originally composed of 65 experiential attributes, could be used not only to describe word meaning, but also to predict broad lexical-semantic classes in a statistically reliable and interpretable way. More specifically, the project asked whether the classification of lexical items into \emph{Thing}, \emph{Action}, and \emph{Property} could benefit from regularization, feature screening, and high-dimensional expansion, while preserving a meaningful interpretation of the selected semantic predictors.
+Starting from the Binder/Testa semantic matrix, we developed a structured pipeline combining preprocessing, unsupervised exploration, supervised classification, multicollinearity diagnostics, high-dimensional feature expansion, marginal screening, regularization, and model comparison. The first conclusion is that the semantic feature space is genuinely informative. Even the baseline multinomial logistic regression fitted on the original 65 semantic attributes achieves strong test performance, with high accuracy and macro-F1. This shows that the experiential dimensions proposed in the Binder representation contain enough discriminative information to support lexical-class prediction. Therefore, the semantic ratings are not only theoretically meaningful, but also statistically predictive.
+The second conclusion is that semantic similarity and lexical classification are related but not equivalent. The unsupervised analysis shows that the feature space contains meaningful internal structure: PCA reveals dominant semantic gradients, and clustering identifies coherent semantic regions. However, these unsupervised structures do not align perfectly with the three target classes. This indicates that the Binder feature space captures fine-grained semantic organization, such as concreteness, sensory-motor information, affective content, and conceptual similarity, rather than directly reproducing the noun/verb/adjective distinction. For this reason, supervised models are necessary when the objective is lexical-class prediction.
+The third conclusion concerns redundancy and multicollinearity. The original 65 semantic features are not independent: many dimensions are naturally correlated because word meanings involve combinations of perceptual, motor, social, affective, and cognitive components. This redundancy is not a defect of the dataset, but a property of semantic representation. From a modelling perspective, however, it makes coefficient interpretation more delicate and motivates the use of regularized models. Ridge, LASSO, and Elastic Net are therefore not only technical alternatives, but appropriate tools for controlling instability in a correlated semantic space.
+The high-dimensional expansion provides the most important methodological extension of the project. By adding squared terms and pairwise interactions, the feature space increases from 65 to 2210 predictors, producing a genuine \(p>n\) setting. This transformation makes the problem statistically more difficult, because it introduces rank deficiency, strong multicollinearity, and a high risk of overfitting. At the same time, it allows the model to represent semantic configurations that cannot be captured by isolated features alone. The screening results show that many of the most informative predictors are interaction terms, such as combinations involving \texttt{practice}, \texttt{human}, \texttt{body}, \texttt{biomotion}, \texttt{path}, \texttt{self}, \texttt{caused}, and \texttt{cognition}. This supports the idea that lexical classes are not determined only by single semantic dimensions, but by structured combinations of experiential attributes.
+Feature screening is therefore a central part of the final pipeline. Reducing the expanded space from 2210 to 300 predictors makes the high-dimensional problem more manageable while preserving the most informative semantic terms. After screening, LASSO and Elastic Net achieve extremely strong test performance, and the final post-selection model confirms the separability of the classes in the screened interaction-based space. However, this result must be interpreted cautiously. The test set is small, especially for the minority classes, and perfect test performance should not be treated as definitive evidence of universal generalization. Rather, it shows that, within the available split, the high-dimensional semantic representation contains a very strong separating signal.
+The comparison with alternative classifiers further clarifies the nature of the predictive signal. Random Forest achieves the best overall accuracy and macro-F1, while the linear SVM obtains the best balanced accuracy. This suggests that the selected semantic space is highly predictive across different modelling families. The strong performance of Random Forest indicates that nonlinear interactions among semantic attributes are useful for classification, while the strong performance of the linear SVM suggests that, after feature selection, the classes are also close to linearly separable in the selected representation. The dummy majority classifier, despite its high raw accuracy, performs poorly in terms of balanced accuracy and macro-F1, confirming that class imbalance must always be taken into account.
+Overall, the answer to the research question is positive. The Binder semantic representation can be successfully reformulated as a supervised statistical learning problem, and high-dimensional statistical learning can improve the analysis by exposing nonlinear and interaction-based semantic structure. The original 65-feature space is already highly informative, but the expanded representation reveals that lexical classification depends on combinations of semantic attributes rather than on isolated dimensions alone. The best results are obtained when high-dimensional expansion is combined with screening and regularization, because this strategy balances expressiveness, stability, and interpretability.
+The project also highlights an important methodological trade-off. Linear and regularized multinomial models are more interpretable and allow a clearer semantic reading of the selected predictors. Nonlinear models, especially Random Forest, achieve slightly stronger predictive performance but are less transparent. Therefore, the best model depends on the objective of the analysis: if the goal is semantic interpretation, regularized and post-selection logistic models are preferable; if the goal is pure predictive accuracy, ensemble and margin-based classifiers are more effective.
+Future work could extend this analysis in several directions. A larger and more balanced dataset would allow more reliable evaluation of minority classes and more stable validation of the high-dimensional results. Repeated resampling, nested cross-validation, or stability selection could be used to assess how robust the selected semantic interactions are across different splits. Finally, the Binder experiential ratings could be compared with distributional or contextual word representations, in order to evaluate whether cognitively motivated semantic features and corpus-based embeddings capture complementary aspects of lexical meaning.
+In conclusion, the Binder semantic representation proves to be a rich and informative basis for statistical learning. It supports accurate lexical-class prediction, reveals interpretable semantic structure, and becomes especially powerful when expanded into a controlled high-dimensional feature space. The main result of the project is that lexical-semantic classes are best understood not as the effect of isolated semantic variables, but as the outcome of structured configurations of perceptual, motor, causal, social, cognitive, temporal, and affective dimensions.
 \newpage
 
 \addcontentsline{toc}{section}{References}
@@ -805,7 +1089,7 @@ In conclusion, the Binder semantic representation proves to be a rich and inform
 
 \newpage
 
-\appendix
+
 \appendix
 \section{Original clustering and biclustering analyses}
 Testa's original project included an extensive exploratory unsupervised analysis of the Binder semantic feature space. The aim of this part of the work was not to predict lexical classes directly, but to investigate whether the 65 primitive semantic attributes were able to produce interpretable similarity structures among words. In other terms, Testa used unsupervised learning to address the question of whether lexical items that are semantically close in an intuitive sense also appear close when represented through Binder et al.'s componential semantic ratings.
@@ -2308,78 +2592,16 @@ For each model, the script performs cross-validated hyperparameter tuning when a
 \end{algorithm}
 
 % ============================================================
-\subsection{Phase 4: Supervised classification using clustering labels}
-
-\subsubsection{File: \texttt{phase4\_cluster\_label\_supervised\_analysis.py}}
-
-This script repeats the supervised analysis using clustering-derived labels instead of the original lexical-semantic labels. The goal is to test whether data-driven clusters are easier to predict than the externally defined classes.
-
-\subsubsection{Cluster-target construction}
-
-The script reconstructs the clustering target using the same logic as Phase 2: PCA is applied to the standardized semantic feature space, and K-Means is fitted on the PCA-reduced training data. The fitted K-Means model is then used to assign labels to both train and test observations.
-
-For the main comparison, the script uses \(k=3\), so that the cluster-based target has the same number of classes as the original \emph{Thing}, \emph{Action}, \emph{Property} target.
-
-\subsubsection{Repeated supervised pipeline}
-
-For each cluster target, the script performs:
-
-\begin{itemize}
-    \item target distribution analysis;
-    \item comparison between cluster labels and original labels;
-    \item feature screening;
-    \item baseline logistic regression;
-    \item LASSO;
-    \item Elastic Net;
-    \item post-selection logistic regression;
-    \item final comparison.
-\end{itemize}
-
-\subsubsection{Pseudocode for Phase 4}
-
-\begin{algorithm}[H]
-\caption{Phase 4: Supervised classification with clustering labels}
-\begin{algorithmic}[1]
-\State Load Phase 3 supervised matrices and original labels
-\State Load Phase 2 PCA and clustering decisions when available
-\State Fit PCA on training features
-\State Transform training and test features
-\State Fit K-Means on training PCA scores
-\State Assign cluster labels to train and test observations
-\State Save cluster assignments and target distributions
-\State Compare cluster labels with original labels
-\For{each cluster target}
-    \State Run feature screening
-    \State Fit baseline logistic classifier
-    \State Fit LASSO model
-    \State Fit Elastic Net model
-    \State Fit post-selection logistic model
-    \State Evaluate all models
-    \State Save metrics, coefficients, selected features, confusion matrices, and plots
-\EndFor
-\State Compare cluster-label performance with original-label performance
-\State Save JSON summary
-\end{algorithmic}
-\end{algorithm}
-
 \subsection{Overall logic of the post-preprocessing pipeline}
 
 The complete pipeline after preprocessing follows a progressive statistical logic.
-
 First, Phase 2 explores the geometry of the feature space without using the target labels for model fitting. This reveals whether the semantic feature space contains natural clusters or low-dimensional latent structure.
-
 Second, Phase 3.1 and Phase 3.2 establish a supervised baseline. The baseline is necessary because all later models must be judged relative to a simple, interpretable classifier.
-
 Third, Phase 3.3 diagnoses multicollinearity. This justifies the later use of LASSO and Elastic Net, because correlated semantic features can destabilize ordinary coefficient estimates.
-
 Fourth, Phase 3.4 ranks features by marginal supervised relevance. This prepares the feature space for regularized modelling and becomes especially important when the predictor space is expanded.
-
 Fifth, Phase 3.5 and Phase 3.6 fit and interpret sparse regularized models. These phases connect prediction with interpretability by identifying which semantic dimensions are actually used by the classifier.
-
 Sixth, Phase 3.7 selects the final linear model using a transparent rule based primarily on macro F1 and balanced accuracy.
-
 Seventh, Phase 3-extra tests whether more flexible classifiers improve performance, thereby evaluating whether the relationship between semantic features and lexical labels is purely linear or involves non-linear interactions.
-
 Finally, Phase 4 repeats the supervised analysis using clustering-derived labels. This provides a direct comparison between externally defined lexical-semantic categories and data-driven semantic groupings.
 
 \begin{algorithm}[H]
@@ -2403,7 +2625,6 @@ Finally, Phase 4 repeats the supervised analysis using clustering-derived labels
 \State Compare original-label and cluster-label predictability
 \end{algorithmic}
 \end{algorithm}
-\subsection{Additional tables and figures}
 \include{additional_tables_and_figures}
 
 \cleardoublepage
