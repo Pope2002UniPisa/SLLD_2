@@ -77,7 +77,7 @@ The starting point of this project is the dataset used in Testa's original work,
 \textbf{Total} & \textbf{534} & \textbf{100.00\%} \\
 \hline
 \end{tabular}
-\caption{Class distribution of the lexical-semantic target variable.}
+\caption{Class distribution in Testa's original dataset (534 items). The working dataset used in this project contains 535 items with slightly different class proportions; see Table~\ref{tab:stratified_split_distribution}.}
 \label{tab:dataset-class-distribution}
 \end{table}
 
@@ -93,11 +93,7 @@ while the ratio between \emph{Thing} and \emph{Action} is
 \frac{434}{56} \approx 7.75.
 \]
 
-As a consequence, a trivial classifier always predicting \emph{Thing} would already obtain a raw accuracy of
-
-\[
-\frac{434}{534} \approx 81.27\%.
-\]
+As a consequence, a trivial classifier always predicting \emph{Thing} would already obtain a raw accuracy of approximately \(81\%\). In Testa's original 534-item dataset this equals \(434/534 \approx 81.27\%\); in the 535-item working dataset used in this project the corresponding value is \(434/535 \approx 81.12\%\), as reported in Table~\ref{tab:stratified_split_distribution}.
 
 However, the same classifier would have zero recall for both \emph{Action} and \emph{Property}. For this reason, the dataset cannot be evaluated using accuracy alone. The class imbalance directly motivates the use of balanced accuracy, macro-F1, class-wise recall and confusion matrices in the supervised evaluation.In its original form, the dataset is moderate-dimensional. The number of predictors is
 
@@ -108,11 +104,11 @@ p_{\text{orig}} = 65,
 with
 
 \[
-\frac{p_{\text{orig}}}{n} = \frac{65}{534} \approx 0.12,
+\frac{p_{\text{orig}}}{n} = \frac{65}{535} \approx 0.12,
 \qquad
-\frac{n}{p_{\text{orig}}} = \frac{534}{65} \approx 8.22.
+\frac{n}{p_{\text{orig}}} = \frac{535}{65} \approx 8.23.
 \]
-Thus, before feature expansion, the number of observations is substantially larger than the number of semantic predictors. This original matrix is used to fit baseline models and regularized models on the native semantic representation. Our project takes the same semantic matrix as a starting point but reformulates it as a supervised statistical learning problem. The original \(534 \times 65\) representation is first used to build baseline and regularized models on the native semantic feature space. The analysis is then extended by transforming the original predictors into a high-dimensional feature space containing the original variables, their quadratic terms and all pairwise interactions.
+Thus, before feature expansion, the number of observations is substantially larger than the number of semantic predictors. This original matrix is used to fit baseline models and regularized models on the native semantic representation. Our project takes the same semantic matrix as a starting point but reformulates it as a supervised statistical learning problem. The original \(535 \times 65\) representation is first used to build baseline and regularized models on the native semantic feature space. The analysis is then extended by transforming the original predictors into a high-dimensional feature space containing the original variables, their quadratic terms and all pairwise interactions.
 Formally, if
 
 \[
@@ -150,19 +146,19 @@ so the transformed feature space contains
 predictors. The dataset is therefore transformed from an original matrix
 
 \[
-X_{\text{orig}} \in \mathbb{R}^{534 \times 65}
+X_{\text{orig}} \in \mathbb{R}^{535 \times 65}
 \]
 
 into a high-dimensional matrix
 
 \[
-X_{\text{HD}} \in \mathbb{R}^{534 \times 2210}.
+X_{\text{HD}} \in \mathbb{R}^{535 \times 2210}.
 \]
 
 This transformation changes the statistical nature of the problem. In the original feature space, the number of observations is larger than the number of predictors. After expansion, instead, the number of predictors exceeds the number of lexical items:
 
 \[
-p = 2210 > n = 534.
+p = 2210 > n = 535.
 \]
 
 The project therefore moves from a moderate-dimensional semantic classification problem to a high-dimensional learning setting. This makes ordinary unregularized multinomial regression unsuitable and motivates the use of regularization, dimensionality reduction and feature screening. At the same time, the expanded representation remains semantically interpretable: quadratic terms capture nonlinear effects of individual semantic dimensions, while interaction terms capture combined semantic profiles, such as the joint contribution of motion and body-related features for actions or social and cognitive features for abstract meanings.
@@ -365,7 +361,7 @@ The optimal $K$ was investigated using two criteria.
     The silhouette scores are modest throughout, reflecting the absence
     of strongly separated clusters in this data. The highest values
     are obtained at small $K$, with $K = 2$ yielding approximately
-    $0.43$ for $K$-means and $0.16$ for AHC.
+    $0.217$ for $K$-means and $0.205$ for AHC.
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -581,19 +577,20 @@ To address multicollinearity and improve generalization, we apply LASSO and Elas
 \hline
 Model & Accuracy & Macro F1 \\
 \hline
-LASSO Logistic & 0.9680 & 0.9150 \\
-Elastic Net Logistic & 0.9705 & 0.9200 \\
+LASSO Logistic & 0.953 & 0.890 \\
+Elastic Net Logistic & 0.953 & 0.890 \\
 \hline
 \end{tabular}
 \caption{Performance of regularized multinomial models.}
 \label{tab:phase3_regularized}
 \end{table}
 
-Both models improve over the baseline, with Elastic Net achieving the best balance between accuracy and macro F1. The improvement in macro F1 (from 0.8904 to 0.9200) is particularly important, as it indicates a more balanced classification across all classes.
+Both regularized models match the unpenalized baseline: accuracy 0.953 and macro F1 0.890 for both LASSO and Elastic Net. In the original 65-feature space, therefore, regularization does not yield a predictive improvement over the baseline multinomial model. This is expected because \(p = 65 \ll n_{\text{train}} = 428\) and the data are already well-separated; the benefit of regularization here is stability and multicollinearity control, not prediction gain. True sparsity and performance improvement emerge only in the high-dimensional setting.
 
 \paragraph{Sparsity and feature selection}
 
-Regularization also induces sparsity, reducing the number of active predictors. The most relevant features selected by LASSO are shown in Figure~\ref{fig:phase3_lasso_coeff}.
+In the original 65-feature space, regularization does not induce true sparsity: both LASSO and Elastic Net keep all 65 predictors active. This is expected because \(p = 65 \ll n_{\text{train}} = 428\), so the setting is not genuinely high-dimensional. Nonetheless, the regularized models produce shrunken and more stable coefficient estimates, and the figures below show the relative magnitude of the estimated coefficients—useful for interpreting which semantic dimensions contribute most to class discrimination. True sparsity, with many coefficients set exactly to zero, emerges only in the high-dimensional phase (Section V).
+The most relevant features (by coefficient magnitude) for LASSO are shown in Figure~\ref{fig:phase3_lasso_coeff}.
 
 \begin{figure}[H]
 \centering
@@ -619,7 +616,7 @@ The sparsity overview in Figure~\ref{fig:phase3_sparsity} shows how many coeffic
 \label{fig:phase3_sparsity}
 \end{figure}
 
-These results indicate that only a subset of the semantic features is necessary to achieve high predictive performance, confirming the presence of redundancy in the original representation.
+These coefficient patterns indicate which semantic features carry the most discriminative information across the three lexical classes, even though all 65 features remain active in this setting. The presence of multicollinearity means that the selected predictors should be interpreted as representative dimensions rather than as an exhaustive minimal set.
 
 \paragraph{Final post-selection model}
 
@@ -1008,7 +1005,7 @@ The output of this phase is therefore a reduced high-dimensional matrix containi
 \subsection{VI. Final model comparison and interpretation}
 
 This final phase integrates the results obtained across all previous analyses, with the objective of identifying the models that provide the best trade-off between predictive performance, statistical stability, and interpretability. The comparison includes the baseline multinomial logistic regression, the regularized models (LASSO and Elastic Net), the post-selection logistic model, and the alternative non-linear classifiers.
-From a purely predictive perspective, the results clearly indicate that performance improves progressively along the pipeline. The baseline multinomial logistic model achieves an accuracy of 0.9533 and a macro F1-score of 0.8904. Regularization leads to consistent improvements, with Elastic Net reaching 0.9705 accuracy and 0.9200 macro F1. The post-selection model further refines these results, achieving 0.9720 accuracy and 0.9229 macro F1.This refitting step follows the general post-selection logic: after a penalized variable-selection stage, refitting a model on the selected variables can reduce shrinkage bias and provide a clearer final predictive model~\cite{belloni2013least}. Finally, the Random Forest classifier outperforms all linear approaches, reaching 0.9813 accuracy and 0.9486 macro F1.
+From a purely predictive perspective, the results reveal two distinct phases. In the original 65-feature space, the baseline multinomial logistic model achieves an accuracy of 0.9533 and a macro F1-score of 0.8904. The regularized LASSO and Elastic Net models match this baseline exactly (accuracy 0.953, macro F1 0.890), without improvement: with \(p = 65 \ll n_{\text{train}} = 428\), the problem is not genuinely high-dimensional and regularization does not induce true sparsity. Performance improves substantially in the high-dimensional phase. The post-selection model achieves 0.9720 accuracy and 0.9229 macro F1. This refitting step follows the general post-selection logic: after a penalized variable-selection stage, refitting a model on the selected variables can reduce shrinkage bias and provide a clearer final predictive model~\cite{belloni2013least}. Finally, the Random Forest classifier outperforms all linear approaches, reaching 0.9813 accuracy and 0.9486 macro F1.
 These improvements are not marginal. The increase in macro F1 from 0.8904 to 0.9486 represents a substantial gain in balanced classification performance across all classes. This confirms that the successive methodological steps—regularization, feature selection, and non-linear modelling—are not only theoretically justified, but also empirically effective.
 However, predictive performance alone is not sufficient to determine the best model. From the perspective of interpretability, multinomial logistic regression models remain superior. The LASSO and Elastic Net solutions provide sparse and stable representations of the semantic space, identifying a reduced subset of predictors that can be directly interpreted in terms of semantic dimensions. In contrast, Random Forest offers higher predictive accuracy but at the cost of reduced interpretability, since the decision process is distributed across many trees and interactions.
 From a statistical learning perspective, the results also confirm the importance of controlling multicollinearity and dimensionality. The strong correlations observed among semantic features (22 pairs with $|r|\geq 0.8$ and 51 predictors with VIF $\geq 5$) make unregularized models unstable. Regularization and feature selection mitigate this issue by reducing variance and focusing the model on the most informative predictors.
