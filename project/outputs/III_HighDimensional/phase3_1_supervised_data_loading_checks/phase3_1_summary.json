@@ -1,0 +1,20 @@
+{
+  "input_train_file": "outputs/I/phase1_4_high_dimensional_expansion/slld_phase1_4_train_2210_scaled.csv",
+  "input_test_file": "outputs/I/phase1_4_high_dimensional_expansion/slld_phase1_4_test_2210_scaled.csv",
+  "n_train": 428,
+  "n_test": 107,
+  "n_features": 2210,
+  "feature_space": "2210 second-degree semantic terms",
+  "class_distribution_train": {
+    "Thing": 347,
+    "Action": 50,
+    "Property": 31
+  },
+  "class_distribution_test": {
+    "Thing": 87,
+    "Action": 12,
+    "Property": 8
+  },
+  "missing_values_train": 0,
+  "missing_values_test": 0
+}

@@ -1,0 +1,7 @@
+split,class,n,percentage
+train,Thing,347,81.07476635514018
+train,Action,50,11.682242990654206
+train,Property,31,7.242990654205607
+test,Thing,87,81.30841121495327
+test,Action,12,11.214953271028037
+test,Property,8,7.476635514018691

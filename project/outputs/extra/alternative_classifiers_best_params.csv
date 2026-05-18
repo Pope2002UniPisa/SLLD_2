@@ -1,0 +1,7 @@
+model,best_cv_macro_f1,best_params
+Dummy majority,,{}
+Post-selection Logistic,0.9040330300122297,"{""C"": 1.0}"
+SVM linear,0.8899120888271872,"{""C"": 1.0}"
+SVM RBF,0.9149802197905519,"{""C"": 1.0, ""gamma"": 0.01}"
+Random Forest,0.86790260372235,"{""max_depth"": null, ""min_samples_split"": 2, ""n_estimators"": 100}"
+k-NN,0.8439600365093338,"{""metric"": ""euclidean"", ""n_neighbors"": 3, ""weights"": ""uniform""}"

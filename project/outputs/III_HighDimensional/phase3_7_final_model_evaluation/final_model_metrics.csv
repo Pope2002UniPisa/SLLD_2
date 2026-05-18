@@ -1,0 +1,3 @@
+model,split,accuracy,balanced_accuracy,macro_f1,weighted_f1
+post_selection_logistic_from_lasso,train,1.0,1.0,1.0,1.0
+post_selection_logistic_from_lasso,test,1.0,1.0,1.0,1.0

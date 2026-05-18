@@ -1,0 +1,7 @@
+threshold,n_pairs_abs_corr_ge_threshold
+0.5,127467
+0.7,28737
+0.8,9962
+0.9,1945
+0.95,404
+0.99,3

@@ -1,7 +1,0 @@
-target,split,class,count,proportion
-kmeans_k3,train,Cluster_01,67,0.15654205607476634
-kmeans_k3,train,Cluster_02,183,0.42757009345794394
-kmeans_k3,train,Cluster_03,178,0.4158878504672897
-kmeans_k3,test,Cluster_01,21,0.19626168224299065
-kmeans_k3,test,Cluster_02,34,0.3177570093457944
-kmeans_k3,test,Cluster_03,52,0.48598130841121495

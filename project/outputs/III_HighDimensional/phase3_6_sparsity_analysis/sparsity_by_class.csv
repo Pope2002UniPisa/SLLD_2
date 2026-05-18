@@ -1,0 +1,7 @@
+model,class,n_nonzero_coefficients
+lasso,Property,151
+lasso,Thing,185
+lasso,Action,135
+elastic_net,Property,167
+elastic_net,Thing,203
+elastic_net,Action,154

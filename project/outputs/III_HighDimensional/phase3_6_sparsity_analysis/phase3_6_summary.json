@@ -1,0 +1,25 @@
+{
+  "models": [
+    {
+      "model": "lasso",
+      "n_features_input_after_screening": 300,
+      "n_classes": 3,
+      "n_coefficients_total": 900,
+      "n_nonzero_coefficients": 471,
+      "coefficient_sparsity_pct": 47.66666666666667,
+      "n_active_features": 234,
+      "feature_sparsity_pct": 21.999999999999996
+    },
+    {
+      "model": "elastic_net",
+      "n_features_input_after_screening": 300,
+      "n_classes": 3,
+      "n_coefficients_total": 900,
+      "n_nonzero_coefficients": 524,
+      "coefficient_sparsity_pct": 41.77777777777778,
+      "n_active_features": 253,
+      "feature_sparsity_pct": 15.666666666666663
+    }
+  ],
+  "n_shared_active_features": 234
+}

@@ -1,0 +1,4 @@
+category,n_features
+shared,234
+lasso_only,0
+elastic_net_only,19

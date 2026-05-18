@@ -1,0 +1,13 @@
+{
+  "best_regularized_model_by_test_macro_f1": "lasso",
+  "n_features_before_screening": 2210,
+  "n_features_in_final_post_selection_model": 234,
+  "test_metrics": {
+    "model": "post_selection_logistic_from_lasso",
+    "split": "test",
+    "accuracy": 1.0,
+    "balanced_accuracy": 1.0,
+    "macro_f1": 1.0,
+    "weighted_f1": 1.0
+  }
+}

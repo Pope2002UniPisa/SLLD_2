@@ -1,0 +1,29 @@
+{
+  "n_observations_train": 428,
+  "n_features_before_screening": 2210,
+  "screen_top_n": 300,
+  "n_features_after_screening": 300,
+  "fan_lv_n_over_log_n": 70.63728301680511,
+  "selected_feature_examples": [
+    "practice_x_human",
+    "short_x_human",
+    "practice_x_caused",
+    "practice_x_short",
+    "practice_x_consequential",
+    "biomotion_x_short",
+    "short_x_self",
+    "near_x_short",
+    "practice_x_self",
+    "body_x_short",
+    "path_x_self",
+    "path_x_cognition",
+    "body_x_practice",
+    "path_x_human",
+    "slow_x_short",
+    "biomotion_x_practice",
+    "duration_x_human",
+    "body_x_path",
+    "near_x_duration",
+    "duration_x_self"
+  ]
+}

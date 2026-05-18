@@ -1,0 +1,3 @@
+split,n_rows,n_features,target_column
+train,428,65,target_word_class
+test,107,65,target_word_class

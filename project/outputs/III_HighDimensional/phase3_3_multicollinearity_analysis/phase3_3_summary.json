@@ -1,0 +1,36 @@
+{
+  "n_observations": 428,
+  "n_features": 2210,
+  "p_greater_than_n": true,
+  "rank_upper_bound": 428,
+  "rank_deficiency_lower_bound": 1782,
+  "classical_vif_status": "not computed because X'X is singular when p > n; rank(X) <= n < p",
+  "correlation_threshold_counts": [
+    {
+      "threshold": 0.5,
+      "n_pairs_abs_corr_ge_threshold": 127467
+    },
+    {
+      "threshold": 0.7,
+      "n_pairs_abs_corr_ge_threshold": 28737
+    },
+    {
+      "threshold": 0.8,
+      "n_pairs_abs_corr_ge_threshold": 9962
+    },
+    {
+      "threshold": 0.9,
+      "n_pairs_abs_corr_ge_threshold": 1945
+    },
+    {
+      "threshold": 0.95,
+      "n_pairs_abs_corr_ge_threshold": 404
+    },
+    {
+      "threshold": 0.99,
+      "n_pairs_abs_corr_ge_threshold": 3
+    }
+  ],
+  "max_abs_pairwise_correlation": 0.9949192341412302,
+  "mean_abs_pairwise_correlation": 0.16857829170457297
+}

@@ -1,0 +1,33 @@
+{
+  "n_train": 428,
+  "n_test": 107,
+  "n_features_used": 2210,
+  "models": [
+    {
+      "model": "dummy_majority",
+      "train_accuracy": 0.8107476635514018,
+      "train_balanced_accuracy": 0.3333333333333333,
+      "train_macro_f1": 0.298494623655914,
+      "train_weighted_f1": 0.7260114561350618,
+      "test_accuracy": 0.8130841121495327,
+      "test_balanced_accuracy": 0.3333333333333333,
+      "test_macro_f1": 0.29896907216494845,
+      "test_weighted_f1": 0.72926100780422,
+      "cv_macro_f1_mean": NaN,
+      "cv_macro_f1_sd": NaN
+    },
+    {
+      "model": "ridge_logistic_all_2210",
+      "train_accuracy": 1.0,
+      "train_balanced_accuracy": 1.0,
+      "train_macro_f1": 1.0,
+      "train_weighted_f1": 1.0,
+      "test_accuracy": 0.9719626168224299,
+      "test_balanced_accuracy": 0.9645593869731801,
+      "test_macro_f1": 0.928999698437195,
+      "test_weighted_f1": 0.973864252970576,
+      "cv_macro_f1_mean": NaN,
+      "cv_macro_f1_sd": NaN
+    }
+  ]
+}

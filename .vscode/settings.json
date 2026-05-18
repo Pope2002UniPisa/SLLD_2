@@ -1,0 +1,17 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true,
+        "**/c:\\Users\\USER\\Desktop\\Uni\\Sant'Anna\\Project\\SLLD_2\\latex\\main.aux": true,
+        "**/c:\\Users\\USER\\Desktop\\Uni\\Sant'Anna\\Project\\SLLD_2\\latex\\main.log": true,
+        "**/c:\\Users\\USER\\Desktop\\Uni\\Sant'Anna\\Project\\SLLD_2\\latex\\main.gz": true,
+        "**/c:\\Users\\USER\\Desktop\\Uni\\Sant'Anna\\Project\\SLLD_2\\latex\\main.out": true
+    }
+}

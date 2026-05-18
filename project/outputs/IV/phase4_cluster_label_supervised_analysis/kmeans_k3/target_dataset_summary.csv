@@ -1,3 +1,0 @@
-split,n_observations,n_features,n_classes,cv_splits_used
-train,428,65,3,5
-test,107,65,3,5
