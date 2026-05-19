@@ -690,15 +690,29 @@ Random Forest & \(0.981\) & \(0.917\) & \(0.949\) & \(0.980\) \\
 SVM linear & \(0.972\) & \(0.989\) & \(0.942\) & \(0.974\) \\
 SVM RBF & \(0.972\) & \(0.927\) & \(0.938\) & \(0.972\) \\
 \(k\)-NN & \(0.953\) & \(0.819\) & \(0.883\) & \(0.950\) \\
-Post-selection Logistic & \(0.944\) & \(0.915\) & \(0.875\) & \(0.947\) \\
+Post-selection Logistic\footnotemark & \(0.944\) & \(0.915\) & \(0.875\) & \(0.947\) \\
 Dummy majority & \(0.813\) & \(0.333\) & \(0.299\) & \(0.729\) \\
 \hline
 \end{tabular}
 \caption{Test performance of the alternative classifiers on the selected semantic feature space.}
 \label{tab:alternative-classifiers-results}
 \end{table}
+\footnotetext{This instance of the Post-selection Logistic model was re-tuned
+independently within the alternative-classifier comparison experiment
+(Phase~3-extra), using 3-fold cross-validation that selected $C = 1.0$.
+It therefore differs from the final model reported in Table~24, where
+$C = 100$ was selected by 5-fold cross-validation in Phase~3.5 and the
+model was subsequently refitted on the union of features selected by
+LASSO and Elastic Net. The two entries are not directly comparable.}
 
-The best overall model by macro-F1 is the Random Forest, with a test macro-F1 of \(0.949\) and an accuracy of \(0.981\). The linear SVM follows closely, with macro-F1 \(0.942\), but it achieves the highest balanced accuracy, \(0.989\), indicating the best average recall across the three classes. The RBF SVM performs similarly, with accuracy \(0.972\) and macro-F1 \(0.938\). The post-selection logistic model remains strong and interpretable, but is slightly below the SVM and Random Forest classifiers. Finally, \(k\)-NN obtains good raw accuracy, \(0.953\), but lower balanced accuracy, \(0.819\), indicating weaker behaviour on at least one minority class. This is plausible because distance-based classifiers are sensitive to class imbalance and to the geometry of the feature space, especially when minority classes occupy small or sparse regions~\cite{cover1967nearest,he2009learning}.
+The best overall model by macro-F1 is the Random Forest, with a test macro-F1 of \(0.949\) and an accuracy of \(0.981\). The linear SVM follows closely, with macro-F1 \(0.942\), but it achieves the highest balanced accuracy, \(0.989\), indicating the best average recall across the three classes. The RBF SVM performs similarly, with accuracy \(0.972\) and macro-F1 \(0.938\). The post-selection logistic model remains strong and interpretable, but is slightly below the SVM and Random Forest classifiers.\footnote{The
+post-selection logistic entry in Table~\ref{tab:alternative-classifiers-results}
+($\text{accuracy} = 0.944$, macro-$F_1 = 0.875$) uses $C = 1.0$
+selected by 3-fold cross-validation within this comparison experiment.
+This differs from the final model in Section~2.3 ($\text{accuracy} =
+0.972$, macro-$F_1 = 0.923$), which uses $C = 100$ from the Phase~3.5
+tuning. The gap reflects the different regularisation strengths, not a
+change in the feature set.} Finally, \(k\)-NN obtains good raw accuracy, \(0.953\), but lower balanced accuracy, \(0.819\), indicating weaker behaviour on at least one minority class. This is plausible because distance-based classifiers are sensitive to class imbalance and to the geometry of the feature space, especially when minority classes occupy small or sparse regions~\cite{cover1967nearest,he2009learning}.
 
 \begin{figure}[H]
 \centering
@@ -2309,7 +2323,14 @@ This list is not used to automatically remove variables. It is only a diagnostic
 \end{algorithm}
 
 % ============================================================
-\subsection{Phase 3.4: Feature screening}
+\subsection{Phase 3.4: Feature screening on the original 65-feature space}
+
+\noindent\textit{Note: this section reports the feature-screening diagnostics
+applied to the original 65 semantic predictors (Phase~3.4). The
+high-dimensional screening on the expanded feature space of 2\,210
+predictors is described in Section~2.5.}
+
+\medskip
 
 \subsubsection{File: \texttt{phase3\_4\_feature\_screening.py}}
 
